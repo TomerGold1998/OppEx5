@@ -3,14 +3,20 @@ package pepse.world.daynight;
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.components.CoordinateSpace;
-import danogl.gui.WindowController;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.transitions.ChangeOpacityTransitionExecutor;
+import pepse.TransitionExecuter;
 
 import java.awt.*;
 
 public class Night {
+
+    //usage is like this instead of di because of the
+    // static create function requirements :(
+    private final static TransitionExecuter transitionExecuter = new ChangeOpacityTransitionExecutor();
+
     /**
      * creating night layer according to window dimensions and change its
      * opacity level through cycle length
@@ -29,6 +35,7 @@ public class Night {
         night.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects.addGameObject(night,layer);
         night.setTag("night");
+        transitionExecuter.executeTransition(cycleLength, night);
         return night;
     }
 }
