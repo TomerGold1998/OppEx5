@@ -1,0 +1,12 @@
+package pepse;
+
+import danogl.GameObject;
+
+/**
+ * Executes transition of a certain object
+ * @author Ruth Yukhnovetsky
+ */
+public interface TransitionExecuter {
+
+    void executeTransition (GameObject gameObject);
+}
