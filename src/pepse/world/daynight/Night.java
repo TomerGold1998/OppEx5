@@ -11,11 +11,6 @@ import danogl.util.Vector2;
 import java.awt.*;
 
 public class Night {
-
-    private static Color blackColor = new Color(1);
-    private Vector2 windowDimensions;
-    private static GameObject gameObject;
-
     /**
      * creating night layer according to window dimensions and change its
      * opacity level through cycle length
@@ -29,7 +24,7 @@ public class Night {
                                     int layer,
                                     Vector2 windowDimensions,
                                     float cycleLength){
-        Renderable renderable = new RectangleRenderable(blackColor);
+        Renderable renderable = new RectangleRenderable(Color.BLACK);
         GameObject night = new GameObject(Vector2.ZERO, windowDimensions, renderable);
         night.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects.addGameObject(night,layer);
