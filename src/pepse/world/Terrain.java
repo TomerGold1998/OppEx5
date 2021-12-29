@@ -25,7 +25,7 @@ public class Terrain {
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final int TERRAIN_DEPTH = 20;
     private static final int INITAL_GROUND_LEVEL = 250;
-    private static final int NOISE_FACTOR = 4;
+    private static final int NOISE_FACTOR = 2;
 
     private final Renderable blockRender;
 
