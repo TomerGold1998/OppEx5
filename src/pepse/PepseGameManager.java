@@ -12,10 +12,14 @@ import pepse.world.Sky;
 import pepse.world.Terrain;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
+import pepse.world.daynight.SunHalo;
+
+import java.awt.*;
 
 public class PepseGameManager extends GameManager {
     private GameObjectCollection gameObjects;
     private Vector2 windowDim;
+    private static Color SUN_HALO_COLOR = new Color(255, 255, 0, 20);
 
     @Override
     public void initializeGame(ImageReader imageReader,
@@ -29,7 +33,8 @@ public class PepseGameManager extends GameManager {
         terrain.createInRange(0, (int) (this.windowDim.x() + 100));
         Sky.create(this.gameObjects, this.windowDim, Layer.BACKGROUND);
         Night.create(gameObjects, Layer.FOREGROUND, windowDim, 30);
-        Sun.create(gameObjects, Layer.BACKGROUND +1, windowDim, 20);
+        var sun = Sun.create(gameObjects, Layer.BACKGROUND +1, windowDim, 25);
+        SunHalo.create(gameObjects, Layer.BACKGROUND + 2, sun, SUN_HALO_COLOR);
     }
 
     public static void main(String[] args) {
