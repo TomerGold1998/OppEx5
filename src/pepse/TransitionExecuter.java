@@ -8,5 +8,5 @@ import danogl.GameObject;
  */
 public interface TransitionExecuter {
 
-    void executeTransition (GameObject gameObject);
+    void executeTransition (float cycleLength, GameObject gameObject);
 }
