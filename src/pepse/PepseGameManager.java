@@ -6,22 +6,26 @@ import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
+import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.configuration.GameLayers;
 import pepse.configuration.GameObjectsConfiguration;
 import pepse.configuration.TransitionConfiguration;
+import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
+import pepse.world.TreeManger;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.trees.Tree;
 
 import java.awt.*;
 
 public class PepseGameManager extends GameManager {
     private GameObjectCollection gameObjects;
     private Vector2 windowDim;
-
+    private static final int NUM_OF_TREES_TO_PLANT = 10;
 
     @Override
     public void initializeGame(ImageReader imageReader,
@@ -40,6 +44,10 @@ public class PepseGameManager extends GameManager {
 
         var sun = Sun.create(gameObjects, GameLayers.SUN_LAYER, windowDim, TransitionConfiguration.SUN_CYCLE_LENGTH);
         SunHalo.create(gameObjects, GameLayers.SUN_HALO_LAYER, sun, GameObjectsConfiguration.SUN_HALO_COLOR);
+
+        TreeManger treeManager = new TreeManger(terrain, gameObjects, windowDim, GameLayers.TREE_LAYER);
+        treeManager.plantTrees(NUM_OF_TREES_TO_PLANT);
+
     }
 
     public static void main(String[] args) {
