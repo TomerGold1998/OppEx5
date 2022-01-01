@@ -18,7 +18,7 @@ public class Night {
     // static create function requirements :(
     private final static TransitionExecuter transitionExecuter = new ChangeOpacityTransitionExecutor(
             0,
-            0.5f,
+            0.8f,
             Transition.CUBIC_INTERPOLATOR_FLOAT,
             Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
             null);
