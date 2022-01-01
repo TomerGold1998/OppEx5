@@ -21,8 +21,7 @@ public class Night {
             0.8f,
             Transition.CUBIC_INTERPOLATOR_FLOAT,
             Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
-            null
-    );
+            null);
 
     /**
      * creating night layer according to window dimensions and change its
