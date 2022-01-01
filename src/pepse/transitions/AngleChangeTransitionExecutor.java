@@ -3,7 +3,7 @@ package pepse.transitions;
 import danogl.GameObject;
 import danogl.components.Transition;
 import danogl.util.Vector2;
-import pepse.TransitionExecuter;
+import pepse.util.TransitionExecuter;
 
 public class AngleChangeTransitionExecutor implements TransitionExecuter {
 

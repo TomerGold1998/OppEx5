@@ -5,22 +5,24 @@ import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
+import pepse.util.GroundHeightCalculator;
 import pepse.util.PerlinNoise;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
  * creating necessary blocks and lets other objects know the height of the terrain at a certain coordinate.
  */
-public class Terrain {
+public class Terrain implements GroundHeightCalculator {
 
 
     private final GameObjectCollection gameObjects;
     private final int groundLayer;
-    private Vector2 windowDimensions;
-    private PerlinNoise noiseCreator;
+    private final Vector2 windowDimensions;
+    private final PerlinNoise noiseCreator;
 
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final int TERRAIN_DEPTH = 20;
@@ -28,6 +30,7 @@ public class Terrain {
     private static final int NOISE_FACTOR = 2;
 
     private final Renderable blockRender;
+    private final HashMap<Integer, Float> groundHeights;
 
 
     public Terrain(GameObjectCollection gameObjects,
@@ -39,6 +42,7 @@ public class Terrain {
         this.windowDimensions = windowDimensions;
         this.blockRender = new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR));
         this.noiseCreator = new PerlinNoise(seed);
+        groundHeights = new HashMap<>();
     }
 
     /**
@@ -47,8 +51,12 @@ public class Terrain {
      * @param x location
      */
     public float groundHeightAt(float x) {
-        return INITAL_GROUND_LEVEL +
-              (float) this.noiseCreator.noise(x) * NOISE_FACTOR * Block.SIZE;
+        if (groundHeights.containsKey((int) x))
+            return groundHeights.get((int) x);
+        var value = INITAL_GROUND_LEVEL +
+                (float) this.noiseCreator.noise(x) * NOISE_FACTOR * Block.SIZE;
+        groundHeights.put((int) x, value);
+        return value;
     }
 
     /**

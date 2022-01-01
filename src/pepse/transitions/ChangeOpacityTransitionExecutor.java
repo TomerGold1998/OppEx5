@@ -2,7 +2,7 @@ package pepse.transitions;
 
 import danogl.GameObject;
 import danogl.components.Transition;
-import pepse.TransitionExecuter;
+import pepse.util.TransitionExecuter;
 
 /**
  * changing opacity of an object
@@ -37,7 +37,7 @@ public class ChangeOpacityTransitionExecutor implements TransitionExecuter {
      */
     @Override
     public void executeTransition(float cycleLength, GameObject gameObject) {
-        var transition = new Transition<Float>(
+        var transition = new Transition<>(
                 gameObject,
                 gameObject.renderer()::setOpaqueness,
                 this.initialOpacity,

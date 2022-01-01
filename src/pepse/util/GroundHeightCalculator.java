@@ -1,4 +1,5 @@
 package pepse.util;
 
-public class GroundHeightCalculator {
+public interface GroundHeightCalculator {
+    float groundHeightAt(float x);
 }
