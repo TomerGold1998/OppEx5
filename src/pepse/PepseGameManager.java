@@ -2,6 +2,7 @@ package pepse;
 
 import danogl.GameManager;
 import danogl.collisions.GameObjectCollection;
+import danogl.collisions.Layer;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
@@ -10,6 +11,8 @@ import danogl.util.Vector2;
 import pepse.configuration.GameLayers;
 import pepse.configuration.GameObjectsConfiguration;
 import pepse.configuration.TransitionConfiguration;
+import pepse.world.Avatar;
+import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
 import pepse.world.daynight.Night;
@@ -40,6 +43,13 @@ public class PepseGameManager extends GameManager {
 
         var sun = Sun.create(gameObjects, GameLayers.SUN_LAYER, windowDim, TransitionConfiguration.SUN_CYCLE_LENGTH);
         SunHalo.create(gameObjects, GameLayers.SUN_HALO_LAYER, sun, GameObjectsConfiguration.SUN_HALO_COLOR);
+
+
+        var avatar = Avatar.create(gameObjects, GameLayers.AVATAR_LAYER, new Vector2(
+                        this.windowDim.x() / 2,
+                        this.windowDim.y() - terrain.groundHeightAt(this.windowDim.x() / 2) - 150),
+                inputListener,
+                imageReader);
     }
 
     public static void main(String[] args) {
