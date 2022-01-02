@@ -5,7 +5,6 @@ import danogl.collisions.GameObjectCollection;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-import pepse.transitions.AngleAxisChangeTransitionExecutor;
 import pepse.util.TransitionExecuter;
 
 import java.awt.*;

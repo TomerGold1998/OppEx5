@@ -13,5 +13,5 @@ public class GameLayers {
     public final static int AVATAR_LAYER = Layer.DEFAULT;
     public final static int NIGHT_LAYER = Layer.FOREGROUND;
 
-    public final static int TREE_LAYER = Layer.DEFAULT;
+    public final static int TREE_LAYER = Layer.STATIC_OBJECTS;
 }
