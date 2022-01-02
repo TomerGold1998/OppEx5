@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class Sun {
 
-    private static int SUN_SIZE = 200;
+    private static int SUN_SIZE = 100;
     private static int SUN_INITAL_ANGLE = 0;
     private static int SUN_FINAL_ANGLE = 360;
 

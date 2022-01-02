@@ -7,6 +7,7 @@ import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.util.GroundHeightCalculator;
 import pepse.util.PerlinNoise;
+import pepse.util.SurfaceCreator;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.Random;
 /**
  * creating necessary blocks and lets other objects know the height of the terrain at a certain coordinate.
  */
-public class Terrain implements GroundHeightCalculator {
+public class Terrain implements GroundHeightCalculator, SurfaceCreator {
 
 
     private final GameObjectCollection gameObjects;
@@ -26,7 +27,7 @@ public class Terrain implements GroundHeightCalculator {
 
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final int TERRAIN_DEPTH = 20;
-    private static final int INITAL_GROUND_LEVEL = 250;
+    private static final int INITAL_GROUND_LEVEL = 100;
     private static final int NOISE_FACTOR = 2;
 
     private final Renderable blockRender;

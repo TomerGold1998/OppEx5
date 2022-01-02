@@ -3,7 +3,9 @@ package pepse.world.trees;
 import danogl.collisions.GameObjectCollection;
 import danogl.util.Vector2;
 import pepse.util.GroundHeightCalculator;
+import pepse.util.SurfaceCreator;
 import pepse.util.TransitionExecuter;
+
 import java.util.Random;
 
 /**
@@ -11,10 +13,10 @@ import java.util.Random;
  *
  * @author Ruth Yukhnovetsky
  */
-public class Tree {
+public class Tree implements SurfaceCreator {
 
-    private static final int TREE_MIN_BUFFER = 100;
-    private static final int TREE_RANDOM_CHANCE = 3;
+    private static final int TREE_MIN_BUFFER = 250;
+    private static final int TREE_RANDOM_CHANCE = 10;
 
     private final GroundHeightCalculator groundHeightCalculator;
     private final GameObjectCollection gameObjectCollection;
