@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class SunHalo {
 
-    private static int SUN_HALO_SIZE = 220;
+    private static int SUN_HALO_SIZE = 110;
 
     public static GameObject create(
             GameObjectCollection gameObjects,
