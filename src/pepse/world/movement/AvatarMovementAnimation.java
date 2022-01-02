@@ -60,6 +60,9 @@ public class AvatarMovementAnimation implements MovementAnimation {
             isStatic = false;
             isFlying = true;
             gameObject.renderer().setRenderable(this.flyingAvatar);
+            if (velocity.x() != 0)
+                gameObject.renderer().setIsFlippedHorizontally(velocity.x() < 0);
+
             currentTimePassed = 0;
         } else {
             if (velocity.x() != 0) {
@@ -81,6 +84,7 @@ public class AvatarMovementAnimation implements MovementAnimation {
             isStatic = false;
             isFlying = false;
             gameObject.renderer().setRenderable(velocity.x() > 0 ? this.rightAvatar : this.leftAvatar);
+            gameObject.renderer().setIsFlippedHorizontally(velocity.x() < 0);
             animationDirection = velocity.x() > 0 ? 1 : -1;
             currentTimePassed = 0;
         } else {
