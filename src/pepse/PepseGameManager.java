@@ -11,6 +11,7 @@ import danogl.util.Vector2;
 import pepse.configuration.GameLayers;
 import pepse.configuration.GameObjectsConfiguration;
 import pepse.configuration.TransitionConfiguration;
+import pepse.transitions.AngleAxisChangeTransitionExecutor;
 import pepse.transitions.ChangeOpacityTransitionExecutor;
 import pepse.world.Avatar;
 import pepse.world.Sky;
@@ -18,6 +19,7 @@ import pepse.world.Terrain;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.trees.Leaf;
 import pepse.world.trees.Tree;
 
 public class PepseGameManager extends GameManager {
@@ -49,12 +51,20 @@ public class PepseGameManager extends GameManager {
                 inputListener,
                 imageReader);
 
-        var leafTransition = new ChangeOpacityTransitionExecutor(
+        var leafOpacity = new ChangeOpacityTransitionExecutor(
                 0.3f,
                 0.6f,
                 Transition.CUBIC_INTERPOLATOR_FLOAT,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
                 null);
+
+        var leafAngle = new AngleAxisChangeTransitionExecutor(
+                0,
+                35,
+                Transition.LINEAR_INTERPOLATOR_FLOAT,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
+                null);
+
         Tree tree = new Tree(terrain,
                 gameObjects,
                 windowDim,
@@ -62,9 +72,11 @@ public class PepseGameManager extends GameManager {
                 GameObjectsConfiguration.TREE_HEIGHT,
                 15,
                 GameObjectsConfiguration.SEED,
-                leafTransition);
+                leafOpacity,
+                leafAngle);
 
         tree.createInRange(0, (int) (this.windowDim.x() + GameObjectsConfiguration.TERRAIN_X_BUFFER));
+
 
     }
 

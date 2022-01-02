@@ -5,6 +5,7 @@ import danogl.collisions.GameObjectCollection;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.transitions.AngleAxisChangeTransitionExecutor;
 import pepse.util.TransitionExecuter;
 
 import java.awt.*;
@@ -20,10 +21,9 @@ public class TreeItem extends GameObject {
 
     private final static int TREE_BOTTOM_BUFFER = 5;
     private final static int LEAF_SIZE = 30;
-    private final static int LEAF_TRANSACTION_LENGTH = 5;
-    private final static int RANDOM_NUMBER_RANGE = 2;
 
-    private final TransitionExecuter transitionExecuter;
+    private final TransitionExecuter leafOpacityTransitionExecuter;
+    private final TransitionExecuter leafAngleTransitionExecuter;
     private final GameObjectCollection collection;
     private final int layer;
     private final Random random;
@@ -36,7 +36,7 @@ public class TreeItem extends GameObject {
      * @param renderable         truck
      * @param layer              layer number to be added
      * @param collection         game object collections
-     * @param transitionExecuter transition executer for the leaf color change
+     * @param leafOpacityTransitionExecuter transition executer for the leaf color change
      * @param seed               random seed
      */
     public TreeItem(Vector2 topLeftCorner,
@@ -44,11 +44,13 @@ public class TreeItem extends GameObject {
                     Renderable renderable,
                     int layer,
                     GameObjectCollection collection,
-                    TransitionExecuter transitionExecuter,
+                    TransitionExecuter leafOpacityTransitionExecuter,
+                    TransitionExecuter leafAngleTransitionExecuter,
                     int seed) {
         super(topLeftCorner, dimensions, renderable);
 
-        this.transitionExecuter = transitionExecuter;
+        this.leafOpacityTransitionExecuter = leafOpacityTransitionExecuter;
+        this.leafAngleTransitionExecuter = leafAngleTransitionExecuter;
         this.collection = collection;
         this.layer = layer;
         this.random = new Random(seed);
@@ -68,19 +70,15 @@ public class TreeItem extends GameObject {
 
             var leafRectangle = new RectangleRenderable(LEAVES_COLOR);
             for (int j = y0; j < y1; j += LEAF_SIZE) {
-                var leaf = new GameObject(new Vector2(i, j),
+                var leaf = new Leaf(new Vector2(i, j),
                         new Vector2(LEAF_SIZE, LEAF_SIZE),
-                        leafRectangle);
-
-                int rand = random.nextInt(RANDOM_NUMBER_RANGE);
-                if (rand == 1) {
-                    transitionExecuter.executeTransition(LEAF_TRANSACTION_LENGTH, leaf);
-                }
+                        leafRectangle,
+                        leafOpacityTransitionExecuter,
+                        leafAngleTransitionExecuter,
+                        5);
                 this.collection.addGameObject(leaf, layer);
             }
         }
-
-
     }
 
     /**
@@ -92,7 +90,7 @@ public class TreeItem extends GameObject {
      * @param windowsDim      game windom dim
      * @param treeHeight      tree height
      * @param truckWidth      tree trunk width
-     * @param leafTransaction leaf transaction
+     * @param leafOpacity leaf transaction
      * @param seed            random number seed
      * @return new created tree item
      */
@@ -103,7 +101,8 @@ public class TreeItem extends GameObject {
             Vector2 windowsDim,
             int treeHeight,
             int truckWidth,
-            TransitionExecuter leafTransaction,
+            TransitionExecuter leafOpacity,
+            TransitionExecuter leafMovement,
             int seed) {
 
         var treeTopY = windowsDim.y() - bottomPosition.y() - treeHeight + TREE_BOTTOM_BUFFER;
@@ -113,7 +112,8 @@ public class TreeItem extends GameObject {
                 new RectangleRenderable(TRUNK_COLOR),
                 layer,
                 collection,
-                leafTransaction,
+                leafOpacity,
+                leafMovement,
                 seed);
     }
 

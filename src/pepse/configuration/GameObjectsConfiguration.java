@@ -9,7 +9,7 @@ import java.awt.*;
  */
 public class GameObjectsConfiguration {
     //GENERAL
-    public final static int SEED = 42;
+    public final static int SEED = 40;
 
 
     //SUN
