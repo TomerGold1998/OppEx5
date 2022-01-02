@@ -60,6 +60,9 @@ public class AvatarMovementAnimation implements MovementAnimation {
             isStatic = false;
             isFlying = true;
             gameObject.renderer().setRenderable(this.flyingAvatar);
+            if (velocity.x() != 0)
+                gameObject.renderer().setIsFlippedHorizontally(velocity.x() < 0);
+
             currentTimePassed = 0;
         } else {
             if (velocity.x() != 0) {
