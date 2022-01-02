@@ -7,6 +7,7 @@ import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
+import danogl.gui.rendering.Camera;
 import danogl.util.Vector2;
 import pepse.configuration.GameLayers;
 import pepse.configuration.GameObjectsConfiguration;
@@ -48,6 +49,14 @@ public class PepseGameManager extends GameManager {
                         this.windowDim.y() - terrain.groundHeightAt(this.windowDim.x() / 2) - 150),
                 inputListener,
                 imageReader);
+
+        this.setCamera(new Camera(
+                avatar,
+                this.windowDim.mult(0.5f).subtract(avatar.getCenter()),
+                windowController.getWindowDimensions(),
+                windowController.getWindowDimensions()
+                ));
+
 
         var leafTransition = new ChangeOpacityTransitionExecutor(
                 0.3f,
