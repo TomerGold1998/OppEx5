@@ -26,7 +26,8 @@ public class Tree implements SurfaceCreator {
     private final int treeWidth;
     private final Random random;
     private final int seed;
-    private final TransitionExecuter leafTransition;
+    private final TransitionExecuter leafOpacity;
+    private final TransitionExecuter leafAngle;
 
     /**
      * creates tree in the game
@@ -38,7 +39,8 @@ public class Tree implements SurfaceCreator {
      * @param treeHeight             tree height
      * @param treeWidth              tree width
      * @param seed                   tree seed
-     * @param leafTransition         leaf change opacity transactions
+     * @param leafOpacity         leaf change opacity transactions
+     * @param leafMovement        leaf change angle transactions
      */
     public Tree(GroundHeightCalculator groundHeightCalculator,
                 GameObjectCollection gameObjectCollection,
@@ -47,7 +49,8 @@ public class Tree implements SurfaceCreator {
                 int treeHeight,
                 int treeWidth,
                 int seed,
-                TransitionExecuter leafTransition) {
+                TransitionExecuter leafOpacity,
+                TransitionExecuter leafMovement) {
         this.groundHeightCalculator = groundHeightCalculator;
         this.gameObjectCollection = gameObjectCollection;
         this.layer = layer;
@@ -56,7 +59,8 @@ public class Tree implements SurfaceCreator {
         this.treeWidth = treeWidth;
         this.seed = seed;
         this.random = new Random(seed);
-        this.leafTransition = leafTransition;
+        this.leafOpacity = leafOpacity;
+        this.leafAngle = leafMovement;
     }
 
     /**
@@ -76,9 +80,9 @@ public class Tree implements SurfaceCreator {
                         windowsDim,
                         treeHeight,
                         treeWidth,
-                        this.leafTransition,
-                        this.seed
-                );
+                        this.leafOpacity,
+                        this.leafAngle,
+                        this.seed);
                 gameObjectCollection.addGameObject(createdTree, layer);
             }
         }
