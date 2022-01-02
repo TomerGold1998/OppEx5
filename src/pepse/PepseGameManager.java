@@ -24,7 +24,6 @@ import pepse.world.trees.Tree;
 public class PepseGameManager extends GameManager {
     private GameObjectCollection gameObjects;
     private Vector2 windowDim;
-    private static final int NUM_OF_TREES_TO_PLANT = 10;
 
     @Override
     public void initializeGame(ImageReader imageReader,
@@ -55,7 +54,7 @@ public class PepseGameManager extends GameManager {
                 this.windowDim.mult(0.5f).subtract(avatar.getCenter()),
                 windowController.getWindowDimensions(),
                 windowController.getWindowDimensions()
-                ));
+        ));
 
 
         var leafTransition = new ChangeOpacityTransitionExecutor(
