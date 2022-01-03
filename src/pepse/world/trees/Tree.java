@@ -6,6 +6,7 @@ import pepse.util.GroundHeightCalculator;
 import pepse.util.SurfaceCreator;
 import pepse.util.TransitionExecuter;
 
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -25,9 +26,10 @@ public class Tree implements SurfaceCreator {
     private final int treeHeight;
     private final int treeWidth;
     private final Random random;
-    private final int seed;
     private final TransitionExecuter leafOpacity;
     private final TransitionExecuter leafAngle;
+
+    private final HashSet<Integer> plantedTreeLocation;
 
     /**
      * creates tree in the game
@@ -57,10 +59,10 @@ public class Tree implements SurfaceCreator {
         this.windowsDim = windowDim;
         this.treeHeight = treeHeight;
         this.treeWidth = treeWidth;
-        this.seed = seed;
         this.random = new Random(seed);
         this.leafOpacity = leafOpacity;
         this.leafAngle = leafMovement;
+        plantedTreeLocation = new HashSet<>();
     }
 
     /**
@@ -71,7 +73,8 @@ public class Tree implements SurfaceCreator {
      */
     public void createInRange(int minX, int maxX) {
         for (int i = minX; i < maxX; i += TREE_MIN_BUFFER) {
-            if (random.nextInt(TREE_RANDOM_CHANCE) == 1) {
+            if (plantedTreeLocation.contains(i) ||
+                random.nextInt(TREE_RANDOM_CHANCE) == 1) {
                 var treeBottom = new Vector2(i, this.groundHeightCalculator.groundHeightAt(i));
                 var createdTree = TreeItem.create(
                         this.gameObjectCollection,
@@ -82,7 +85,8 @@ public class Tree implements SurfaceCreator {
                         treeWidth,
                         this.leafOpacity,
                         this.leafAngle,
-                        this.seed);
+                        this.random);
+                plantedTreeLocation.add(i);
                 gameObjectCollection.addGameObject(createdTree, layer);
             }
         }

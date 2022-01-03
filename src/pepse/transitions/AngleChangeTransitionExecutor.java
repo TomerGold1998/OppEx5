@@ -7,21 +7,21 @@ import pepse.util.TransitionExecuter;
 
 public class AngleChangeTransitionExecutor implements TransitionExecuter {
 
-    private float initalAngle;
+    private float initialAngle;
     private float finalAngle;
     private Vector2 windowDim;
     private Transition.Interpolator<Float> interpolator;
     private Transition.TransitionType transitionType;
     private Runnable onTransitionFinishedCallback;
 
-    public AngleChangeTransitionExecutor(float initalAngle,
+    public AngleChangeTransitionExecutor(float initialAngle,
                                          float finalAngle,
                                          Vector2 windowDim,
                                          Transition.Interpolator<Float> interpolator,
                                          Transition.TransitionType transitionType,
                                          Runnable onTransitionFinishedCallback) {
 
-        this.initalAngle = initalAngle;
+        this.initialAngle = initialAngle;
         this.finalAngle = finalAngle;
         this.windowDim = windowDim;
         this.interpolator = interpolator;
@@ -34,7 +34,7 @@ public class AngleChangeTransitionExecutor implements TransitionExecuter {
         var transition = new Transition<>(
                 gameObject,
                 (angle) -> gameObject.setCenter(calculateSunPosition(angle)),
-                this.initalAngle,
+                this.initialAngle,
                 this.finalAngle,
                 this.interpolator,
                 cycleLength,
