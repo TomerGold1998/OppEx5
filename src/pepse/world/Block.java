@@ -4,8 +4,9 @@ import danogl.GameObject;
 import danogl.components.GameObjectPhysics;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.util.TemporaryItem;
 
-public class Block extends GameObject {
+public class Block extends GameObject implements TemporaryItem {
     public static final int SIZE = 30;
 
     public Block(Vector2 topLeftCorner, Renderable renderable) {

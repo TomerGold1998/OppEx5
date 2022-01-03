@@ -5,15 +5,19 @@ import danogl.collisions.GameObjectCollection;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.util.GameObjectsContainer;
+import pepse.util.TemporaryItem;
 import pepse.util.TransitionExecuter;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
  * represent a game tree
  */
-public class TreeItem extends GameObject {
+public class TreeItem extends GameObjectsContainer  implements TemporaryItem {
 
     private final static Color TRUNK_COLOR = new Color(100, 50, 20);
     private final static Color LEAVES_COLOR = new Color(50, 200, 30);
@@ -21,22 +25,23 @@ public class TreeItem extends GameObject {
     private final static int TREE_BOTTOM_BUFFER = 5;
     private final static int LEAF_SIZE = 30;
 
+    private final ArrayList<GameObject> leafList;
+
     private final TransitionExecuter leafOpacityTransitionExecuter;
     private final TransitionExecuter leafAngleTransitionExecuter;
     private final GameObjectCollection collection;
     private final int layer;
-    private final Random random;
 
     /**
      * constrctor for the tree object
      *
-     * @param topLeftCorner      tree top left position
-     * @param dimensions         tree truck size
-     * @param renderable         truck
-     * @param layer              layer number to be added
-     * @param collection         game object collections
+     * @param topLeftCorner                 tree top left position
+     * @param dimensions                    tree truck size
+     * @param renderable                    truck
+     * @param layer                         layer number to be added
+     * @param collection                    game object collections
      * @param leafOpacityTransitionExecuter transition executer for the leaf color change
-     * @param seed               random seed
+     * @param seed                          random seed
      */
     public TreeItem(Vector2 topLeftCorner,
                     Vector2 dimensions,
@@ -52,7 +57,7 @@ public class TreeItem extends GameObject {
         this.leafAngleTransitionExecuter = leafAngleTransitionExecuter;
         this.collection = collection;
         this.layer = layer;
-        this.random = new Random(seed);
+        this.leafList = new ArrayList<>();
 
         createLeaves(topLeftCorner, dimensions);
     }
@@ -75,22 +80,28 @@ public class TreeItem extends GameObject {
                         leafOpacityTransitionExecuter,
                         leafAngleTransitionExecuter,
                         5);
+                this.leafList.add(leaf);
                 this.collection.addGameObject(leaf, layer);
             }
         }
     }
 
+    @Override
+    public List<GameObject> getInnerGameObjects() {
+        return this.leafList;
+    }
+
     /**
      * Create function for the tree item
      *
-     * @param collection      game object collection
-     * @param bottomPosition  tree bottom position
-     * @param layer           tree layer id
-     * @param windowsDim      game windom dim
-     * @param treeHeight      tree height
-     * @param truckWidth      tree trunk width
-     * @param leafOpacity leaf transaction
-     * @param seed            random number seed
+     * @param collection     game object collection
+     * @param bottomPosition tree bottom position
+     * @param layer          tree layer id
+     * @param windowsDim     game windom dim
+     * @param treeHeight     tree height
+     * @param truckWidth     tree trunk width
+     * @param leafOpacity    leaf transaction
+     * @param seed           random number seed
      * @return new created tree item
      */
     public static TreeItem create(
@@ -115,5 +126,4 @@ public class TreeItem extends GameObject {
                 leafMovement,
                 seed);
     }
-
 }
