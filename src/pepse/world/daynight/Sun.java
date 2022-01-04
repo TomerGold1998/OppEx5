@@ -39,7 +39,7 @@ public class Sun {
                 windowDimensions.y() - windowDimensions.y() / 4));
         sun.setTag("sun");
 
-        transition.executeTransition(cycleLength, sun);
+        transition.createTransitions(cycleLength, sun);
 
         gameObjects.addGameObject(sun, layer);
 

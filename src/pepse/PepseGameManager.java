@@ -15,6 +15,9 @@ import pepse.configuration.GameObjectsConfiguration;
 import pepse.configuration.TransitionConfiguration;
 import pepse.transitions.AngleAxisAndSizeChangeTransitionExecutor;
 import pepse.transitions.ChangeOpacityTransitionExecutor;
+import pepse.transitions.HorizontalTransitionExecutor;
+import pepse.world.trees.leaf.LeafLifeDeathCycle;
+import pepse.world.trees.leaf.LeafTransitionHandler;
 import pepse.util.GameTextInputGetter;
 import pepse.util.SurfaceCreator;
 import pepse.util.WordToActionHandler;
@@ -79,13 +82,17 @@ public class PepseGameManager extends GameManager {
                 null);
 
         var leafAngle = new AngleAxisAndSizeChangeTransitionExecutor(
-                0,
-                35,
+                -30,
+                30,
                 Transition.LINEAR_INTERPOLATOR_FLOAT,
                 Transition.LINEAR_INTERPOLATOR_VECTOR,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
                 null);
 
+        var leafWoobling = new HorizontalTransitionExecutor(75f,
+                Transition.LINEAR_INTERPOLATOR_FLOAT,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
+                null);
         var treeRandom = new Random(GameObjectsConfiguration.SEED);
         var treeLocationGetter = new TreesCacheLocationGetter(
                 terrain,
@@ -96,8 +103,12 @@ public class PepseGameManager extends GameManager {
                 GameLayers.TREE_LAYER,
                 treeRandom,
                 treeLocationGetter,
-                leafOpacity,
-                leafAngle);
+                new LeafTransitionHandler(
+                        leafOpacity,
+                        leafAngle,
+                        TransitionConfiguration.LEAF_SIZE_AND_ANGLE_CYCLE,
+                        this.random),
+                new LeafLifeDeathCycle(leafWoobling, this.random));
 
         var surfaces = new ArrayList<SurfaceCreator>();
         surfaces.add(terrain);
@@ -119,6 +130,11 @@ public class PepseGameManager extends GameManager {
                 avatar
         );
 
+        this.worldSurfaceHandler.updateSurface();
+        gameObjects().layers().shouldLayersCollide(
+                GameLayers.LEAF_LAYER,
+                GameLayers.BLOCK_LAYER,
+                true);
         createGameBonus(imageReader, inputListener, sun);
     }
 

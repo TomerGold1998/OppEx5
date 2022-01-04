@@ -26,7 +26,13 @@ public class GameObjectsConfiguration {
     public final static int AVATAR_ENERGY = 100;
 
     //TREE
-    public static final int TREE_HEIGHT = 250;
+    public final static int[] TREE_HEIGHT_OPTIONS = new int[]{250, 400, 120, 500};
+    public final static int[] TREE_WIDTH_OPTIONS = new int[]{10, 15, 20, 25};
+
+    //LEAF
+    public final static int LEAF_MAX_LIFE = 180;
+    public final static int LEAF_MIN_LIFE = 3;
+
 
     //BONUS
     public static final String[] DESIGN_PATTERNS = {"DECORATOR", "STRATEGY", "FACADE", "SINGLETON"};

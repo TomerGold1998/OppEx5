@@ -29,8 +29,17 @@ public class AngleChangeTransitionExecutor implements TransitionExecuter {
         this.onTransitionFinishedCallback = onTransitionFinishedCallback;
     }
 
+    private Vector2 calculateSunPosition(float angle) {
+        var majorRadius = this.windowDim.x() / 2;
+        var minorRadius = this.windowDim.x() / 2.2;
+        var y = Math.sin(Math.toRadians(angle)) * minorRadius;
+        var x = Math.cos(Math.toRadians(angle)) * majorRadius;
+
+        return new Vector2((float) ((this.windowDim.x() / 2) - x), (float) (this.windowDim.y() - y));
+    }
+
     @Override
-    public void executeTransition(float cycleLength, GameObject gameObject) {
+    public Transition[] createTransitions(float cycleLength, GameObject gameObject) {
         var transition = new Transition<>(
                 gameObject,
                 (angle) -> gameObject.setCenter(calculateSunPosition(angle)),
@@ -41,14 +50,6 @@ public class AngleChangeTransitionExecutor implements TransitionExecuter {
                 this.transitionType,
                 onTransitionFinishedCallback
         );
-    }
-
-    private Vector2 calculateSunPosition(float angle) {
-        var majorRadius = this.windowDim.x() / 2;
-        var minorRadius = this.windowDim.x() / 2.2;
-        var y = Math.sin(Math.toRadians(angle)) * minorRadius;
-        var x = Math.cos(Math.toRadians(angle)) * majorRadius;
-
-        return new Vector2((float) ((this.windowDim.x() / 2) -  x), (float) (this.windowDim.y() - y));
+        return new Transition[]{transition};
     }
 }
