@@ -54,7 +54,7 @@ public class AngularMovementTransitionExecuter implements TransitionExecuter {
      * @param gameObject  game object to be executed on
      */
     @Override
-    public void executeTransition(float cycleLength, GameObject gameObject) {
+    public Transition[] createTransitions(float cycleLength, GameObject gameObject) {
         var transition = new Transition<>(
                 gameObject,
                 (angle) -> gameObject.setCenter(calculateSunPosition(angle)),
@@ -65,6 +65,7 @@ public class AngularMovementTransitionExecuter implements TransitionExecuter {
                 this.transitionType,
                 onTransitionFinishedCallback
         );
+        return new Transition[]{transition};
     }
 
 

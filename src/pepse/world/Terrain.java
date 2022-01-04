@@ -95,9 +95,15 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
     private ArrayList<Block> createBlocksByDepth(float x, float y) {
         ArrayList<Block> blocks = new ArrayList<>();
         for (var i = 0; i < TERRAIN_DEPTH; i++) {
-            blocks.add(
-                    new Block(new Vector2(x, this.windowDimensions.y() - (y - (Block.SIZE * i))),
-                            new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR))));
+            if (i < 2) {
+                blocks.add(new ReactingBlock(
+                        new Vector2(x, this.windowDimensions.y() - (y - (Block.SIZE * i))),
+                        new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR))));
+            } else {
+                blocks.add(new Block(
+                        new Vector2(x, this.windowDimensions.y() - (y - (Block.SIZE * i))),
+                        new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR))));
+            }
         }
         return blocks;
     }

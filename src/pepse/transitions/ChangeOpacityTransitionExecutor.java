@@ -45,7 +45,7 @@ public class ChangeOpacityTransitionExecutor implements TransitionExecuter {
      * @param gameObject  game object to be transitioned
      */
     @Override
-    public void executeTransition(float cycleLength, GameObject gameObject) {
+    public Transition[] createTransitions(float cycleLength, GameObject gameObject) {
         var transition = new Transition<>(
                 gameObject,
                 gameObject.renderer()::setOpaqueness,
@@ -56,6 +56,6 @@ public class ChangeOpacityTransitionExecutor implements TransitionExecuter {
                 type,
                 onEnd
         );
-
+        return new Transition[]{transition};
     }
 }

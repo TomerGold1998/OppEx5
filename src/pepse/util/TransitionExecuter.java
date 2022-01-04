@@ -1,6 +1,7 @@
 package pepse.util;
 
 import danogl.GameObject;
+import danogl.components.Transition;
 
 /**
  * Executes transition of a certain object
@@ -8,5 +9,5 @@ import danogl.GameObject;
  */
 public interface TransitionExecuter {
 
-    void executeTransition (float cycleLength, GameObject gameObject);
+    Transition[] createTransitions(float cycleLength, GameObject gameObject);
 }
