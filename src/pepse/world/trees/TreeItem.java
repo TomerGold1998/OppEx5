@@ -6,16 +6,16 @@ import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.configuration.GameLayers;
-import pepse.world.trees.leaf.LeafLifeDeathCycle;
-import pepse.world.trees.leaf.LeafTransitionHandler;
+import pepse.util.ColorSupplier;
 import pepse.util.GameObjectsContainer;
 import pepse.util.TemporaryItem;
 import pepse.world.trees.leaf.Leaf;
+import pepse.world.trees.leaf.LeafLifeDeathCycle;
+import pepse.world.trees.leaf.LeafTransitionHandler;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * represent a game tree
@@ -25,7 +25,7 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
     private final static Color TRUNK_COLOR = new Color(100, 50, 20);
     private final static Color LEAVES_COLOR = new Color(50, 200, 30);
 
-    private final static int LEAF_SIZE = 20;
+    private final static int LEAF_SIZE = 25;
     private final LeafLifeDeathCycle leafLifeDeathCycle;
 
     private final ArrayList<GameObject> leafList;
@@ -59,7 +59,7 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
 
     private void createLeaves(Vector2 top, Vector2 trunkDimensions) {
         //creating leaves for each trunk
-        int leafyRange = (int) trunkDimensions.y() / 3;
+        int leafyRange = (int) trunkDimensions.y() / 4;
         int leafTop = (int) (top.x() + trunkDimensions.x() / 2);
 
         int x0 = leafTop - leafyRange - (int) (trunkDimensions.x() / 2);
@@ -68,7 +68,7 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
         int y1 = (int) top.y() + leafyRange;
         for (int i = x0; i < x1; i += LEAF_SIZE) {
 
-            var leafRectangle = new RectangleRenderable(LEAVES_COLOR);
+            var leafRectangle = new RectangleRenderable(ColorSupplier.approximateColor(LEAVES_COLOR));
             for (int j = y0; j < y1; j += LEAF_SIZE) {
                 var leaf = new Leaf(new Vector2(i, j),
                         new Vector2(LEAF_SIZE, LEAF_SIZE),

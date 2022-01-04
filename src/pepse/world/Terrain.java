@@ -2,7 +2,6 @@ package pepse.world;
 
 import danogl.collisions.GameObjectCollection;
 import danogl.gui.rendering.RectangleRenderable;
-import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.util.ColorSupplier;
 import pepse.util.GroundHeightCalculator;
@@ -29,8 +28,6 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
     private static final int TERRAIN_DEPTH = 20;
     private static final int INITAL_GROUND_LEVEL = 100;
     private static final int NOISE_FACTOR = 2;
-
-    private final Renderable blockRender;
     private final HashMap<Integer, Float> groundHeights;
 
 
@@ -41,7 +38,6 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
         this.gameObjects = gameObjects;
         this.groundLayer = groundLayer;
         this.windowDimensions = windowDimensions;
-        this.blockRender = new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR));
         this.noiseCreator = new PerlinNoise(seed);
         groundHeights = new HashMap<>();
     }
@@ -102,11 +98,11 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
             if (i < 2) {
                 blocks.add(new ReactingBlock(
                         new Vector2(x, this.windowDimensions.y() - (y - (Block.SIZE * i))),
-                        this.blockRender));
+                        new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR))));
             } else {
                 blocks.add(new Block(
                         new Vector2(x, this.windowDimensions.y() - (y - (Block.SIZE * i))),
-                        this.blockRender));
+                        new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR))));
             }
         }
         return blocks;

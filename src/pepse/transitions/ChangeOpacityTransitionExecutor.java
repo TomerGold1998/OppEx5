@@ -11,12 +11,21 @@ import pepse.util.TransitionExecuter;
  */
 public class ChangeOpacityTransitionExecutor implements TransitionExecuter {
 
-    private float initialOpacity;
-    private float finalOpacity;
-    private Transition.Interpolator<Float> interpolator;
-    private Transition.TransitionType type;
-    private Runnable onEnd;
+    private final float initialOpacity;
+    private final float finalOpacity;
+    private final Transition.Interpolator<Float> interpolator;
+    private final Transition.TransitionType type;
+    private final Runnable onEnd;
 
+    /**
+     * creates new ChangeOpacityTransitionExecutor
+     *
+     * @param initialOpacity inital opacity for the transition
+     * @param finalOpacity   final opacity for the transition
+     * @param interpolator   Transition interpolator
+     * @param type           TransitionType
+     * @param onEnd          function to execute on end of transition
+     */
     public ChangeOpacityTransitionExecutor(float initialOpacity,
                                            float finalOpacity,
                                            Transition.Interpolator<Float> interpolator,

@@ -26,7 +26,7 @@ public class GameObjectsConfiguration {
     public final static int AVATAR_ENERGY = 100;
 
     //TREE
-    public final static int[] TREE_HEIGHT_OPTIONS = new int[]{250, 400, 120, 500};
+    public final static int[] TREE_HEIGHT_OPTIONS = new int[]{250, 200, 120, 300};
     public final static int[] TREE_WIDTH_OPTIONS = new int[]{10, 15, 20, 25};
 
     //LEAF
