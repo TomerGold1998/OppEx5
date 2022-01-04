@@ -104,7 +104,7 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
      * @param treeHeight     tree height
      * @param truckWidth     tree trunk width
      * @param leafOpacity    leaf transaction
-     * @param random           random number seed
+     * @param random         random number seed
      * @return new created tree item
      */
     public static TreeItem create(
@@ -118,7 +118,7 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
             TransitionExecuter leafMovement,
             Random random) {
 
-        var treeTopY = windowsDim.y() - bottomPosition.y() - treeHeight + TREE_BOTTOM_BUFFER;
+        var treeTopY = windowsDim.y() - bottomPosition.y() - treeHeight;
 
         return new TreeItem(new Vector2(bottomPosition.x(), treeTopY),
                 new Vector2(truckWidth, treeHeight),

@@ -61,16 +61,16 @@ public class Avatar extends GameObject {
      */
     public void update(float deltaTime) {
         super.update(deltaTime);
-        this.animationHandler.updateRender(this, deltaTime);
-
         var keyPressed = false;
 
-        if (userInputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
+        if (userInputListener.isKeyPressed(KeyEvent.VK_LEFT) &&
+                !userInputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
             keyToMovement.get(KeyEvent.VK_LEFT).move(this);
             keyPressed = true;
         }
 
-        if (userInputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
+        if (userInputListener.isKeyPressed(KeyEvent.VK_RIGHT) &&
+                !userInputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
             keyToMovement.get(KeyEvent.VK_RIGHT).move(this);
             keyPressed = true;
         }
@@ -93,6 +93,8 @@ public class Avatar extends GameObject {
             // object is resting, increase energy level
             this.energyHandler.increaseLevel();
         }
+
+        this.animationHandler.updateRender(this, deltaTime);
     }
 
 
