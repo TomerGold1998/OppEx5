@@ -2,7 +2,6 @@ package pepse.world.trees;
 
 import danogl.collisions.GameObjectCollection;
 import danogl.util.Vector2;
-import pepse.util.GroundHeightCalculator;
 import pepse.util.SurfaceCreator;
 import pepse.util.TransitionExecuter;
 
@@ -15,50 +14,40 @@ import java.util.Random;
  */
 public class Tree implements SurfaceCreator {
 
-    private static final int TREE_MIN_BUFFER = 250;
-    private static final int TREE_RANDOM_CHANCE = 10;
+    private final static int[] TREE_HEIGHT_OPTIONS = new int[]{250, 400, 120, 500};
+    private final static int[] TREE_WIDTH_OPTIONS = new int[]{10, 15, 20, 25};
 
-    private final GroundHeightCalculator groundHeightCalculator;
     private final GameObjectCollection gameObjectCollection;
+
     private final int layer;
     private final Vector2 windowsDim;
-    private final int treeHeight;
-    private final int treeWidth;
     private final Random random;
-    private final int seed;
+    private final TreesLocationGetter treesLocationGetter;
     private final TransitionExecuter leafOpacity;
     private final TransitionExecuter leafAngle;
 
     /**
      * creates tree in the game
      *
-     * @param groundHeightCalculator groundHeightCalculator object in order to get the ground height at position
-     * @param gameObjectCollection   game object collections objects
-     * @param windowDim              game window dim size
-     * @param layer                  trees wanted layer ids
-     * @param treeHeight             tree height
-     * @param treeWidth              tree width
-     * @param seed                   tree seed
-     * @param leafOpacity         leaf change opacity transactions
-     * @param leafMovement        leaf change angle transactions
+     * @param gameObjectCollection game object collections objects
+     * @param windowDim            game window dim size
+     * @param layer                trees wanted layer ids
+     * @param random               tree seed
+     * @param leafOpacity          leaf change opacity transactions
+     * @param leafMovement         leaf change angle transactions
      */
-    public Tree(GroundHeightCalculator groundHeightCalculator,
-                GameObjectCollection gameObjectCollection,
+    public Tree(GameObjectCollection gameObjectCollection,
                 Vector2 windowDim,
                 int layer,
-                int treeHeight,
-                int treeWidth,
-                int seed,
+                Random random,
+                TreesLocationGetter treesLocationGetter,
                 TransitionExecuter leafOpacity,
                 TransitionExecuter leafMovement) {
-        this.groundHeightCalculator = groundHeightCalculator;
         this.gameObjectCollection = gameObjectCollection;
         this.layer = layer;
         this.windowsDim = windowDim;
-        this.treeHeight = treeHeight;
-        this.treeWidth = treeWidth;
-        this.seed = seed;
-        this.random = new Random(seed);
+        this.random = random;
+        this.treesLocationGetter = treesLocationGetter;
         this.leafOpacity = leafOpacity;
         this.leafAngle = leafMovement;
     }
@@ -70,22 +59,20 @@ public class Tree implements SurfaceCreator {
      * @param maxX end range of tree creation
      */
     public void createInRange(int minX, int maxX) {
-        for (int i = minX; i < maxX; i += TREE_MIN_BUFFER) {
-            if (random.nextInt(TREE_RANDOM_CHANCE) == 1) {
-                var treeBottom = new Vector2(i, this.groundHeightCalculator.groundHeightAt(i));
-                var createdTree = TreeItem.create(
-                        this.gameObjectCollection,
-                        treeBottom,
-                        layer,
-                        windowsDim,
-                        treeHeight,
-                        treeWidth,
-                        this.leafOpacity,
-                        this.leafAngle,
-                        this.seed);
-                gameObjectCollection.addGameObject(createdTree, layer);
-            }
+        var locations = this.treesLocationGetter.getTreesLocationInRange(minX, maxX);
+        for (var location : locations) {
+            var treeBottom = new Vector2(location.x(), location.y());
+            var createdTree = TreeItem.create(
+                    this.gameObjectCollection,
+                    treeBottom,
+                    layer,
+                    windowsDim,
+                    TREE_HEIGHT_OPTIONS[random.nextInt(TREE_HEIGHT_OPTIONS.length)],
+                    TREE_WIDTH_OPTIONS[random.nextInt(TREE_WIDTH_OPTIONS.length)],
+                    this.leafOpacity,
+                    this.leafAngle,
+                    this.random);
+            gameObjectCollection.addGameObject(createdTree, layer);
         }
     }
-
 }

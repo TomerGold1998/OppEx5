@@ -17,7 +17,7 @@ import java.util.Random;
 /**
  * represent a game tree
  */
-public class TreeItem extends GameObjectsContainer  implements TemporaryItem {
+public class TreeItem extends GameObjectsContainer implements TemporaryItem {
 
     private final static Color TRUNK_COLOR = new Color(100, 50, 20);
     private final static Color LEAVES_COLOR = new Color(50, 200, 30);
@@ -41,7 +41,7 @@ public class TreeItem extends GameObjectsContainer  implements TemporaryItem {
      * @param layer                         layer number to be added
      * @param collection                    game object collections
      * @param leafOpacityTransitionExecuter transition executer for the leaf color change
-     * @param seed                          random seed
+     * @param random                        random seed
      */
     public TreeItem(Vector2 topLeftCorner,
                     Vector2 dimensions,
@@ -50,7 +50,7 @@ public class TreeItem extends GameObjectsContainer  implements TemporaryItem {
                     GameObjectCollection collection,
                     TransitionExecuter leafOpacityTransitionExecuter,
                     TransitionExecuter leafAngleTransitionExecuter,
-                    int seed) {
+                    Random random) {
         super(topLeftCorner, dimensions, renderable);
 
         this.leafOpacityTransitionExecuter = leafOpacityTransitionExecuter;
@@ -101,7 +101,7 @@ public class TreeItem extends GameObjectsContainer  implements TemporaryItem {
      * @param treeHeight     tree height
      * @param truckWidth     tree trunk width
      * @param leafOpacity    leaf transaction
-     * @param seed           random number seed
+     * @param random         random number seed
      * @return new created tree item
      */
     public static TreeItem create(
@@ -113,9 +113,9 @@ public class TreeItem extends GameObjectsContainer  implements TemporaryItem {
             int truckWidth,
             TransitionExecuter leafOpacity,
             TransitionExecuter leafMovement,
-            int seed) {
+            Random random) {
 
-        var treeTopY = windowsDim.y() - bottomPosition.y() - treeHeight + TREE_BOTTOM_BUFFER;
+        var treeTopY = windowsDim.y() - bottomPosition.y() - treeHeight;
 
         return new TreeItem(new Vector2(bottomPosition.x(), treeTopY),
                 new Vector2(truckWidth, treeHeight),
@@ -124,6 +124,6 @@ public class TreeItem extends GameObjectsContainer  implements TemporaryItem {
                 collection,
                 leafOpacity,
                 leafMovement,
-                seed);
+                random);
     }
 }

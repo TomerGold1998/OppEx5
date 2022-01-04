@@ -18,6 +18,7 @@ public class AvatarMovementAnimation implements MovementAnimation {
 
     private int animationDirection = 0;
     private float currentTimePassed = 0;
+    private float lastXVelocity = 0;
     private boolean isStatic = true;
     private boolean isFlying = false;
 
@@ -53,23 +54,33 @@ public class AvatarMovementAnimation implements MovementAnimation {
             isFlying = false;
             isStatic = true;
             gameObject.renderer().setRenderable(this.staticAvatar);
+
             currentTimePassed = 0;
+        } else {
+            handleAvatarMovement(gameObject, timeFromLastUpdate, velocity);
         }
+
+        if (lastXVelocity != 0) {
+            var shouldTurnLeft = lastXVelocity < 0;
+            if (gameObject.renderer().isFlippedHorizontally() != shouldTurnLeft)
+                gameObject.renderer().setIsFlippedHorizontally(shouldTurnLeft);
+
+        }
+        lastXVelocity = velocity.x();
+    }
+
+    private void handleAvatarMovement(GameObject gameObject, float timeFromLastUpdate, Vector2 velocity) {
 
         if (velocity.y() != 0) {
             isStatic = false;
             isFlying = true;
             gameObject.renderer().setRenderable(this.flyingAvatar);
-            if (velocity.x() != 0)
-                gameObject.renderer().setIsFlippedHorizontally(velocity.x() < 0);
-
             currentTimePassed = 0;
         } else {
             if (velocity.x() != 0) {
                 handleWalkingAnimation(gameObject, timeFromLastUpdate, velocity);
             }
         }
-
     }
 
     /**
@@ -84,7 +95,6 @@ public class AvatarMovementAnimation implements MovementAnimation {
             isStatic = false;
             isFlying = false;
             gameObject.renderer().setRenderable(velocity.x() > 0 ? this.rightAvatar : this.leftAvatar);
-            gameObject.renderer().setIsFlippedHorizontally(velocity.x() < 0);
             animationDirection = velocity.x() > 0 ? 1 : -1;
             currentTimePassed = 0;
         } else {

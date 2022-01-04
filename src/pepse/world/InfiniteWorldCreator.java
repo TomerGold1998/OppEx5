@@ -4,7 +4,7 @@ import pepse.util.SurfaceCreator;
 
 import java.util.List;
 
-public class InfiniteWorldHandler {
+public class InfiniteWorldCreator {
 
     private final List<SurfaceCreator> surfaces;
     private final int xBufferFromPoint;
@@ -14,7 +14,7 @@ public class InfiniteWorldHandler {
 
     private static final int minAreaToRegenerate = 100;
 
-    public InfiniteWorldHandler(List<SurfaceCreator> surfaces,
+    public InfiniteWorldCreator(List<SurfaceCreator> surfaces,
                                 int xBufferFromPoint,
                                 int initalX) {
 
