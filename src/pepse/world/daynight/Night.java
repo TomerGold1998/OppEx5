@@ -42,7 +42,7 @@ public class Night {
         night.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects.addGameObject(night, layer);
         night.setTag("night");
-        transitionExecuter.executeTransition(cycleLength, night);
+        transitionExecuter.createTransitions(cycleLength, night);
         return night;
     }
 }

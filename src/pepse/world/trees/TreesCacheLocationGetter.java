@@ -3,9 +3,11 @@ package pepse.world.trees;
 import danogl.util.Vector2;
 import pepse.util.GroundHeightCalculator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * gets a list of location using cache of used locations
@@ -43,7 +45,7 @@ public class TreesCacheLocationGetter implements TreesLocationGetter {
             this.minKnownRange = minX;
         }
 
-        return this.currentTreesLocations.subMap(minX, maxX).values().stream().toList();
+        return new ArrayList<>(this.currentTreesLocations.subMap(minX, maxX).values());
     }
 
     private void addRandomTreeLocation(int from, int to) {
