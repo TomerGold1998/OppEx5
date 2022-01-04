@@ -12,7 +12,7 @@ import pepse.util.SurfaceCreator;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
+import java.util.List;
 
 /**
  * creating necessary blocks and lets other objects know the height of the terrain at a certain coordinate.
@@ -61,6 +61,19 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
     }
 
     /**
+     * Used in order to calcaulate the real ground location at x position
+     * using the known block size
+     *
+     * @param x input location
+     * @return the y location of the game object (relative to 0,0 being the bottom left position
+     */
+    @Override
+    public float gameObjectHeightAt(float x) {
+        return (float) Math.floor(groundHeightAt(x) / Block.SIZE) * Block.SIZE;
+    }
+
+
+    /**
      * creates the blocks at the wanted x range
      * (uses the groundHeightAt for knowing the wanted height for point x)
      *
@@ -68,11 +81,8 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
      * @param maxX the end point of adding the blocks
      */
     public void createInRange(int minX, int maxX) {
-        var realMinX = this.getClosestToBlockSize(minX);
-        var realMaxX = this.getClosestToBlockSize(maxX);
-
-        for (var x = realMinX; x < realMaxX; x += Block.SIZE) {
-            var blockHeight = (float) Math.floor(groundHeightAt(x) / Block.SIZE) * Block.SIZE;
+        for (var x : getPossibleFixedItemsLocation(minX, maxX)) {
+            var blockHeight = this.gameObjectHeightAt(x);
             var blocksToAdd = createBlocksByDepth(x, blockHeight);
             for (var blockToAdd : blocksToAdd)
                 this.gameObjects.addGameObject(blockToAdd, this.groundLayer);
@@ -92,6 +102,17 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
             blocks.add(new Block(new Vector2(x, this.windowDimensions.y() - (y - (Block.SIZE * i))), this.blockRender));
         }
         return blocks;
+    }
+
+    @Override
+    public List<Integer> getPossibleFixedItemsLocation(int fromRange, int toRange) {
+        var options = new ArrayList<Integer>();
+        var realFrom = getClosestToBlockSize(fromRange);
+        var realTo = getClosestToBlockSize(toRange);
+        for (var x = realFrom; x <= realTo; x += Block.SIZE) {
+            options.add(x);
+        }
+        return options;
     }
 
     /**

@@ -7,11 +7,11 @@ import pepse.util.TemporaryItem;
 public class RemoveUnusedGameObjects {
     private final GameObjectCollection collection;
     private final int layer;
-    private final InfiniteWorldHandler worldHandler;
+    private final InfiniteWorldCreator worldHandler;
 
     public RemoveUnusedGameObjects(GameObjectCollection collection,
                                    int layer,
-                                   InfiniteWorldHandler worldHandler) {
+                                   InfiniteWorldCreator worldHandler) {
 
         this.collection = collection;
         this.layer = layer;

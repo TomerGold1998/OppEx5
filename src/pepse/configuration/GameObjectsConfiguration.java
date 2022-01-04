@@ -9,17 +9,17 @@ import java.awt.*;
  */
 public class GameObjectsConfiguration {
     //GENERAL
-    public final static int SEED = 40;
+    public final static int SEED = 42;
 
 
     //SUN
     public final static Color SUN_HALO_COLOR = new Color(255, 255, 0, 20);
 
     //AVATAR
-    public final static String STATIC_MALE_PATH = "./src/static_man.png";
-    public final static String LEFT_MALE_PATH = "./src/left_male.png";
-    public final static String RIGHT_MALE_PATH = "./src/right_male.png";
-    public final static String FLYING_MALE_PATH = "./src/flying_man.png";
+    public final static String STATIC_MALE_PATH = "./src/assets/static_man.png";
+    public final static String LEFT_MALE_PATH = "./src/assets/left_male.png";
+    public final static String RIGHT_MALE_PATH = "./src/assets/right_male.png";
+    public final static String FLYING_MALE_PATH = "./src/assets/flying_man.png";
 
     public final static Vector2 AVATAR_SIZE = new Vector2(60, 80);
 
@@ -27,4 +27,8 @@ public class GameObjectsConfiguration {
 
     //TREE
     public static final int TREE_HEIGHT = 250;
+
+    //BONUS
+    public static final String[] DESIGN_PATTERNS = {"DECORATOR", "STRATEGY", "FACADE", "SINGLETON"};
+    public final static String YAHEL_IMG_PATH = "./src/assets/yahel.png";
 }
