@@ -5,6 +5,7 @@ import danogl.collisions.GameObjectCollection;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.util.ColorSupplier;
 import pepse.util.GameObjectsContainer;
 import pepse.util.TemporaryItem;
 import pepse.util.TransitionExecuter;
@@ -72,7 +73,7 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
         int y1 = (int) top.y() + leafyRange;
         for (int i = x0; i < x1; i += LEAF_SIZE) {
 
-            var leafRectangle = new RectangleRenderable(LEAVES_COLOR);
+            var leafRectangle = new RectangleRenderable(ColorSupplier.approximateColor(LEAVES_COLOR));
             for (int j = y0; j < y1; j += LEAF_SIZE) {
                 var leaf = new Leaf(new Vector2(i, j),
                         new Vector2(LEAF_SIZE, LEAF_SIZE),

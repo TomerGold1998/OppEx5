@@ -13,7 +13,7 @@ import danogl.util.Vector2;
 import pepse.configuration.GameLayers;
 import pepse.configuration.GameObjectsConfiguration;
 import pepse.configuration.TransitionConfiguration;
-import pepse.transitions.AngleAxisAndSizeChangeTransitionExecutor;
+import pepse.transitions.AngleAndSizeTransitionExecutor;
 import pepse.transitions.ChangeOpacityTransitionExecutor;
 import pepse.util.GameTextInputGetter;
 import pepse.util.SurfaceCreator;
@@ -78,9 +78,10 @@ public class PepseGameManager extends GameManager {
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
                 null);
 
-        var leafAngle = new AngleAxisAndSizeChangeTransitionExecutor(
-                0,
-                35,
+        var leafWindMovementTransition = new AngleAndSizeTransitionExecutor(
+                TransitionConfiguration.LEAF_START_ANGLE,
+                TransitionConfiguration.LEAF_END_ANGLE,
+                TransitionConfiguration.BIG_LEAF_SIZE,
                 Transition.LINEAR_INTERPOLATOR_FLOAT,
                 Transition.LINEAR_INTERPOLATOR_VECTOR,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
@@ -97,7 +98,7 @@ public class PepseGameManager extends GameManager {
                 treeRandom,
                 treeLocationGetter,
                 leafOpacity,
-                leafAngle);
+                leafWindMovementTransition);
 
         var surfaces = new ArrayList<SurfaceCreator>();
         surfaces.add(terrain);

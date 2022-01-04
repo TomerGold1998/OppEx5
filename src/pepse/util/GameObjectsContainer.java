@@ -13,15 +13,19 @@ import java.util.List;
 public abstract class GameObjectsContainer extends GameObject {
 
     /**
-     * Construct a new GameObjectsContainer instance.
+     * create new GameObjectsContainer
      *
-     * @param topLeftCorner Position of the object, in window coordinates (pixels).
-     *                      Note that (0,0) is the top-left corner of the window.
-     * @param dimensions    Width and height in window coordinates.
-     * @param renderable    The renderable representing the object. Can be null, in which case
+     * @param topLeftCorner topLeftCorner of the game object
+     * @param dimensions    dimension of the game object
+     * @param renderable    renderable for the game object
      */
     public GameObjectsContainer(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable) {
         super(topLeftCorner, dimensions, renderable);
     }
+
+    /**
+     * @return a list containing all of the game object inner game object
+     * for example (tree contains leaves etc.)
+     */
     public abstract List<GameObject> getInnerGameObjects();
 }

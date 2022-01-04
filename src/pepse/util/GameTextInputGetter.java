@@ -15,13 +15,13 @@ public class GameTextInputGetter {
     private final Map<Integer, Character> keyEventToChar;
     private final UserInputListener listener;
     private final int maxWordLength;
-    private String output = "";
 
+    private String output = "";
     private float sumDeltaTime = 0;
     private float lastUserInputDelta = 0;
 
     //At least 0.14 seconds different between a Char to a new Char
-    private float MIN_LETTER_BUFFER = 0.14f;
+    private final static float MIN_LETTER_BUFFER = 0.14f;
 
     /**
      * Creates new GameTextInputGetter object
@@ -43,7 +43,7 @@ public class GameTextInputGetter {
      * listen to the user key strokes of our selected keys
      * updates the user string by the key pressed
      *
-     * @param deltaTime
+     * @param deltaTime time passed in seconds since last update
      */
     public void listenToUser(float deltaTime) {
         sumDeltaTime += deltaTime;
@@ -59,7 +59,7 @@ public class GameTextInputGetter {
     }
 
     /**
-     * get the user inputed word of X length
+     * get the user inputted word of X length
      *
      * @param wordLength the requested word length to read from the user
      * @return the user entered word, null if the user has not entered enough letters yet

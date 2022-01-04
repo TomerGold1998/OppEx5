@@ -31,7 +31,6 @@ public class WorldSurfaceHandler {
                                RemoveUnusedGameObjects removeUnusedGameObjects,
                                Vector2 windowDim,
                                GameObject objectToFollow) {
-
         this.infiniteWorldCreator = infiniteWorldHandler;
         this.removeUnusedGameObjects = removeUnusedGameObjects;
         this.windowDim = windowDim;
