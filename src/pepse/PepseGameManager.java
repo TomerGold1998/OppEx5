@@ -16,8 +16,6 @@ import pepse.configuration.TransitionConfiguration;
 import pepse.transitions.AngleAxisAndSizeChangeTransitionExecutor;
 import pepse.transitions.ChangeOpacityTransitionExecutor;
 import pepse.transitions.HorizontalTransitionExecutor;
-import pepse.world.trees.leaf.LeafLifeDeathCycle;
-import pepse.world.trees.leaf.LeafTransitionHandler;
 import pepse.util.GameTextInputGetter;
 import pepse.util.SurfaceCreator;
 import pepse.util.WordToActionHandler;
@@ -28,6 +26,8 @@ import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
 import pepse.world.trees.Tree;
 import pepse.world.trees.TreesCacheLocationGetter;
+import pepse.world.trees.leaf.LeafLifeDeathCycle;
+import pepse.world.trees.leaf.LeafTransitionHandler;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -53,17 +53,36 @@ public class PepseGameManager extends GameManager {
         var windowDim = windowController.getWindowDimensions();
 
         this.random = new Random(GameObjectsConfiguration.SEED);
-        Terrain terrain = new Terrain(gameObjects, GameLayers.BLOCK_LAYER, windowDim, GameObjectsConfiguration.SEED);
+        Terrain terrain = new Terrain(
+                gameObjects,
+                GameLayers.BLOCK_LAYER,
+                windowDim,
+                GameObjectsConfiguration.SEED);
+        Sky.create(
+                gameObjects,
+                windowDim,
+                GameLayers.SKY_LAYER);
+        Night.create(
+                gameObjects,
+                GameLayers.NIGHT_LAYER,
+                windowDim,
+                TransitionConfiguration.NIGHT_CYCLE_LENGTH);
 
-        Sky.create(gameObjects, windowDim, GameLayers.SKY_LAYER);
-        Night.create(gameObjects, GameLayers.NIGHT_LAYER, windowDim, TransitionConfiguration.NIGHT_CYCLE_LENGTH);
+        var sun = Sun.create(
+                gameObjects,
+                GameLayers.SUN_LAYER,
+                windowDim,
+                TransitionConfiguration.SUN_CYCLE_LENGTH);
+        SunHalo.create(
+                gameObjects,
+                GameLayers.SUN_HALO_LAYER,
+                sun,
+                GameObjectsConfiguration.SUN_HALO_COLOR);
 
-        var sun = Sun.create(gameObjects, GameLayers.SUN_LAYER, windowDim, TransitionConfiguration.SUN_CYCLE_LENGTH);
-        SunHalo.create(gameObjects, GameLayers.SUN_HALO_LAYER, sun, GameObjectsConfiguration.SUN_HALO_COLOR);
 
         var avatar = Avatar.create(gameObjects, GameLayers.AVATAR_LAYER, new Vector2(
                         windowDim.x() / 2,
-                        windowDim.y() - terrain.groundHeightAt(windowDim.x() / 2) - 150),
+                        windowDim.y() - (terrain.gameObjectHeightAt(windowDim.x() / 2) + GameObjectsConfiguration.AVATAR_SIZE.y())),
                 inputListener,
                 imageReader);
 
@@ -74,41 +93,7 @@ public class PepseGameManager extends GameManager {
                 windowController.getWindowDimensions()
         ));
 
-        var leafOpacity = new ChangeOpacityTransitionExecutor(
-                0.3f,
-                0.6f,
-                Transition.CUBIC_INTERPOLATOR_FLOAT,
-                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
-                null);
-
-        var leafAngle = new AngleAxisAndSizeChangeTransitionExecutor(
-                -30,
-                30,
-                Transition.LINEAR_INTERPOLATOR_FLOAT,
-                Transition.LINEAR_INTERPOLATOR_VECTOR,
-                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
-                null);
-
-        var leafWoobling = new HorizontalTransitionExecutor(75f,
-                Transition.LINEAR_INTERPOLATOR_FLOAT,
-                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
-                null);
-        var treeRandom = new Random(GameObjectsConfiguration.SEED);
-        var treeLocationGetter = new TreesCacheLocationGetter(
-                terrain,
-                (int) avatar.getCenter().x(),
-                treeRandom);
-        Tree tree = new Tree(gameObjects,
-                windowDim,
-                GameLayers.TREE_LAYER,
-                treeRandom,
-                treeLocationGetter,
-                new LeafTransitionHandler(
-                        leafOpacity,
-                        leafAngle,
-                        TransitionConfiguration.LEAF_SIZE_AND_ANGLE_CYCLE,
-                        this.random),
-                new LeafLifeDeathCycle(leafWoobling, this.random));
+        Tree tree = createTrees(gameObjects, windowDim, terrain, avatar);
 
         var surfaces = new ArrayList<SurfaceCreator>();
         surfaces.add(terrain);
@@ -131,11 +116,55 @@ public class PepseGameManager extends GameManager {
         );
 
         this.worldSurfaceHandler.updateSurface();
+        createGameBonus(imageReader, inputListener, sun);
+
+        setupLayerCollide();
+    }
+
+    private Tree createTrees(GameObjectCollection gameObjects, Vector2 windowDim, Terrain terrain, Avatar avatar) {
+        var leafOpacity = new ChangeOpacityTransitionExecutor(
+                0.3f,
+                0.6f,
+                Transition.CUBIC_INTERPOLATOR_FLOAT,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
+                null);
+
+        var leafAngle = new AngleAxisAndSizeChangeTransitionExecutor(
+                TransitionConfiguration.LEAF_START_ANGLE,
+                TransitionConfiguration.LEAF_END_ANGLE,
+                TransitionConfiguration.BIG_LEAF_SIZE,
+                Transition.LINEAR_INTERPOLATOR_FLOAT,
+                Transition.LINEAR_INTERPOLATOR_VECTOR,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
+                null);
+
+        var leafWoobling = new HorizontalTransitionExecutor(
+                TransitionConfiguration.LEAF_WOOBLING_MAX_SPEED,
+                Transition.LINEAR_INTERPOLATOR_FLOAT,
+                Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
+                null);
+        var treeRandom = new Random(GameObjectsConfiguration.SEED);
+        var treeLocationGetter = new TreesCacheLocationGetter(
+                terrain,
+                (int) avatar.getCenter().x(),
+                treeRandom);
+        return new Tree(gameObjects,
+                windowDim,
+                GameLayers.TREE_LAYER,
+                treeLocationGetter,
+                new LeafTransitionHandler(
+                        leafOpacity,
+                        leafAngle,
+                        TransitionConfiguration.LEAF_SIZE_AND_ANGLE_CYCLE,
+                        this.random),
+                new LeafLifeDeathCycle(leafWoobling, this.random));
+    }
+
+    private void setupLayerCollide() {
         gameObjects().layers().shouldLayersCollide(
                 GameLayers.LEAF_LAYER,
                 GameLayers.BLOCK_LAYER,
                 true);
-        createGameBonus(imageReader, inputListener, sun);
     }
 
     private void createGameBonus(ImageReader imageReader,

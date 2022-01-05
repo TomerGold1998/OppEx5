@@ -1,11 +1,11 @@
 package pepse.world.movement;
 
-import danogl.GameObject;
+import pepse.util.AnimatedGameObject;
 
 /**
  * interface for executing render change and animations
  * @author Tomer Goldberg
  */
 public interface MovementAnimation {
-    void updateRender(GameObject gameObject, float timeFromLastUpdate);
+    void updateRender(AnimatedGameObject gameObject);
 }

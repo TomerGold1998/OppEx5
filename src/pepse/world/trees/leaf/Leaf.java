@@ -30,7 +30,7 @@ public class Leaf extends GameObject {
     public Leaf(Vector2 topLeftCorner,
                 Vector2 dimensions,
                 Renderable renderable) {
-        super(topLeftCorner, dimensions, renderable);;
+        super(topLeftCorner, dimensions, renderable);
     }
 
     @Override

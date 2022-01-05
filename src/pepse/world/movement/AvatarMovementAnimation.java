@@ -1,8 +1,9 @@
 package pepse.world.movement;
 
-import danogl.GameObject;
+import danogl.gui.rendering.AnimationRenderable;
 import danogl.gui.rendering.Renderable;
-import danogl.util.Vector2;
+import pepse.util.AnimatedGameObject;
+import pepse.util.MovementOptions;
 
 /**
  * Handles the avatar movement render change
@@ -12,16 +13,10 @@ public class AvatarMovementAnimation implements MovementAnimation {
     private static final float WALKING_CHANGE_ANIMATION = 0.15f;
 
     private final Renderable staticAvatar;
-    private final Renderable leftAvatar;
-    private final Renderable rightAvatar;
+    private final Renderable walkingLeftAvatar;
+    private final Renderable walkingRightAvatar;
     private final Renderable flyingAvatar;
-
-    private int animationDirection = 0;
-    private float currentTimePassed = 0;
-    private float lastXVelocity = 0;
-    private boolean isStatic = true;
-    private boolean isFlying = false;
-
+    private MovementOptions lastMovement;
 
     /**
      * ctor for the avatar movement animation
@@ -37,73 +32,56 @@ public class AvatarMovementAnimation implements MovementAnimation {
                                    Renderable flyingAvatar) {
 
         this.staticAvatar = staticAvatar;
-        this.leftAvatar = leftAvatar;
-        this.rightAvatar = rightAvatar;
+        this.walkingLeftAvatar = new AnimationRenderable(new Renderable[]{
+                leftAvatar,
+                rightAvatar},
+                WALKING_CHANGE_ANIMATION);
+
+        this.walkingRightAvatar = new AnimationRenderable(new Renderable[]{
+                rightAvatar,
+                leftAvatar},
+                WALKING_CHANGE_ANIMATION);
         this.flyingAvatar = flyingAvatar;
+        this.lastMovement = MovementOptions.Standing;
     }
 
     /**
      * changes the render of the game object
      *
-     * @param gameObject         game object to change render
-     * @param timeFromLastUpdate the time changed since the last call the update render function
+     * @param gameObject game object to change render
      */
-    public void updateRender(GameObject gameObject, float timeFromLastUpdate) {
-        var velocity = gameObject.getVelocity();
-        if (!isStatic && velocity.y() == 0 && velocity.x() == 0) {
-            isFlying = false;
-            isStatic = true;
+    public void updateRender(AnimatedGameObject gameObject) {
+        if (gameObject.getCurrentMovement() != this.lastMovement) {
+            changeRender(gameObject);
+        }
+        if (gameObject.getVelocity().x() != 0)
+            gameObject.renderer().setIsFlippedHorizontally(gameObject.getVelocity().x() < 0);
+    }
+
+    private void changeRender(AnimatedGameObject gameObject) {
+        if (gameObject.getCurrentMovement() == MovementOptions.Standing) {
             gameObject.renderer().setRenderable(this.staticAvatar);
-
-            currentTimePassed = 0;
         } else {
-            handleAvatarMovement(gameObject, timeFromLastUpdate, velocity);
+            handleAvatarMovement(gameObject);
         }
 
-        if (lastXVelocity != 0) {
-            var shouldTurnLeft = lastXVelocity < 0;
-            if (gameObject.renderer().isFlippedHorizontally() != shouldTurnLeft)
-                gameObject.renderer().setIsFlippedHorizontally(shouldTurnLeft);
 
-        }
-        lastXVelocity = velocity.x();
+        this.lastMovement = gameObject.getCurrentMovement();
     }
 
-    private void handleAvatarMovement(GameObject gameObject, float timeFromLastUpdate, Vector2 velocity) {
-
-        if (velocity.y() != 0) {
-            isStatic = false;
-            isFlying = true;
-            gameObject.renderer().setRenderable(this.flyingAvatar);
-            currentTimePassed = 0;
-        } else {
-            if (velocity.x() != 0) {
-                handleWalkingAnimation(gameObject, timeFromLastUpdate, velocity);
+    private void handleAvatarMovement(AnimatedGameObject gameObject) {
+        var gameObjectMovement = gameObject.getCurrentMovement();
+        if (gameObject.getVelocity().y() != 0) {
+            if (gameObjectMovement == MovementOptions.Flying) {
+                gameObject.renderer().setRenderable(this.flyingAvatar);
+            } else {
+                gameObject.renderer().setRenderable(this.staticAvatar);
             }
-        }
-    }
-
-    /**
-     * Handles the walking animaiton
-     *
-     * @param gameObject         game object to move
-     * @param timeFromLastUpdate the time changed since the last call the update render function
-     * @param velocity           the current game object velocity
-     */
-    private void handleWalkingAnimation(GameObject gameObject, float timeFromLastUpdate, Vector2 velocity) {
-        if (isStatic || isFlying) {
-            isStatic = false;
-            isFlying = false;
-            gameObject.renderer().setRenderable(velocity.x() > 0 ? this.rightAvatar : this.leftAvatar);
-            animationDirection = velocity.x() > 0 ? 1 : -1;
-            currentTimePassed = 0;
         } else {
-            // already moving, change renderable for animation style
-            currentTimePassed += timeFromLastUpdate;
-            if (currentTimePassed >= WALKING_CHANGE_ANIMATION) {
-                currentTimePassed = 0;
-                animationDirection *= -1;
-                gameObject.renderer().setRenderable(animationDirection > 0 ? this.rightAvatar : this.leftAvatar);
+            if (gameObjectMovement == MovementOptions.Right) {
+                gameObject.renderer().setRenderable(this.walkingRightAvatar);
+            } else {
+                gameObject.renderer().setRenderable(this.walkingLeftAvatar);
             }
         }
     }
