@@ -2,14 +2,14 @@ package pepse.transitions;
 
 import danogl.GameObject;
 import danogl.components.Transition;
-import pepse.util.TransitionExecuter;
+import pepse.util.TransitionCreator;
 
 /**
  * horizontal movement transition executor
  *
  * @author Ruth Yukhnovetsky
  */
-public class HorizontalTransitionExecutor implements TransitionExecuter {
+public class HorizontalTransitionCreator implements TransitionCreator {
 
     private final float finalValue;
     private final Transition.Interpolator<Float> interpolator;
@@ -24,10 +24,10 @@ public class HorizontalTransitionExecutor implements TransitionExecuter {
      * @param transitionType               type of transition
      * @param onTransitionFinishedCallback callback
      */
-    public HorizontalTransitionExecutor(float finalValue,
-                                        Transition.Interpolator<Float> interpolator,
-                                        Transition.TransitionType transitionType,
-                                        Runnable onTransitionFinishedCallback) {
+    public HorizontalTransitionCreator(float finalValue,
+                                       Transition.Interpolator<Float> interpolator,
+                                       Transition.TransitionType transitionType,
+                                       Runnable onTransitionFinishedCallback) {
 
         this.finalValue = finalValue;
         this.interpolator = interpolator;

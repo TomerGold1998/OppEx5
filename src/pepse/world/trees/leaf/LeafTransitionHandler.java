@@ -2,13 +2,13 @@ package pepse.world.trees.leaf;
 
 import danogl.components.ScheduledTask;
 import pepse.configuration.TransitionConfiguration;
-import pepse.util.TransitionExecuter;
+import pepse.util.TransitionCreator;
 
 import java.util.Random;
 
 public class LeafTransitionHandler {
-    private final TransitionExecuter opacityTransition;
-    private final TransitionExecuter angleAndSizeTransition;
+    private final TransitionCreator opacityTransition;
+    private final TransitionCreator angleAndSizeTransition;
     private final float cycleLength;
     private final Random random;
 
@@ -16,8 +16,8 @@ public class LeafTransitionHandler {
 
     private final static int RANDOM_NUMBER_RANGE = 5;
 
-    public LeafTransitionHandler(TransitionExecuter opacityTransition,
-                                 TransitionExecuter angleAndSizeTransition,
+    public LeafTransitionHandler(TransitionCreator opacityTransition,
+                                 TransitionCreator angleAndSizeTransition,
                                  float cycleLength,
                                  Random random) {
 

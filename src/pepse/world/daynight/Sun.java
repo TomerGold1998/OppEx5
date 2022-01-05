@@ -6,7 +6,7 @@ import danogl.components.CoordinateSpace;
 import danogl.components.Transition;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.util.Vector2;
-import pepse.transitions.AngularMovementTransitionExecuter;
+import pepse.transitions.AngularMovementTransitionCreator;
 
 import java.awt.*;
 
@@ -22,7 +22,7 @@ public class Sun {
             Vector2 windowDimensions,
             float cycleLength) {
 
-        var transition = new AngularMovementTransitionExecuter(
+        var transition = new AngularMovementTransitionCreator(
                 SUN_INITAL_ANGLE,
                 SUN_FINAL_ANGLE,
                 windowDimensions,
