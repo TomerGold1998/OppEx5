@@ -13,9 +13,9 @@ import danogl.util.Vector2;
 import pepse.configuration.GameLayers;
 import pepse.configuration.GameObjectsConfiguration;
 import pepse.configuration.TransitionConfiguration;
-import pepse.transitions.AngleAxisAndSizeChangeTransitionExecutor;
+import pepse.transitions.AngleAxisAndSizeChangeTransitionCreator;
 import pepse.transitions.ChangeOpacityTransitionExecutor;
-import pepse.transitions.HorizontalTransitionExecutor;
+import pepse.transitions.HorizontalTransitionCreator;
 import pepse.util.GameTextInputGetter;
 import pepse.util.SurfaceCreator;
 import pepse.util.WordToActionHandler;
@@ -129,7 +129,7 @@ public class PepseGameManager extends GameManager {
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
                 null);
 
-        var leafAngle = new AngleAxisAndSizeChangeTransitionExecutor(
+        var leafAngle = new AngleAxisAndSizeChangeTransitionCreator(
                 TransitionConfiguration.LEAF_START_ANGLE,
                 TransitionConfiguration.LEAF_END_ANGLE,
                 TransitionConfiguration.BIG_LEAF_SIZE,
@@ -138,7 +138,7 @@ public class PepseGameManager extends GameManager {
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
                 null);
 
-        var leafWoobling = new HorizontalTransitionExecutor(
+        var leafWoobling = new HorizontalTransitionCreator(
                 TransitionConfiguration.LEAF_WOOBLING_MAX_SPEED,
                 Transition.LINEAR_INTERPOLATOR_FLOAT,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
@@ -157,7 +157,7 @@ public class PepseGameManager extends GameManager {
                         leafAngle,
                         TransitionConfiguration.LEAF_SIZE_AND_ANGLE_CYCLE,
                         this.random),
-                new LeafLifeDeathCycle(leafWoobling, this.random));
+                new LeafLifeDeathCycle(leafWoobling, gameObjects, this.random));
     }
 
     private void setupLayerCollide() {

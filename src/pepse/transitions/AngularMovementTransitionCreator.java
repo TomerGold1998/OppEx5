@@ -3,14 +3,14 @@ package pepse.transitions;
 import danogl.GameObject;
 import danogl.components.Transition;
 import danogl.util.Vector2;
-import pepse.util.TransitionExecuter;
+import pepse.util.TransitionCreator;
 
 /**
  * execute angular movement transition
  *
  * @author Tomer Goldberg
  */
-public class AngularMovementTransitionExecuter implements TransitionExecuter {
+public class AngularMovementTransitionCreator implements TransitionCreator {
 
     private final float initalAngle;
     private final float finalAngle;
@@ -32,12 +32,12 @@ public class AngularMovementTransitionExecuter implements TransitionExecuter {
      * @param transitionType               TransitionType
      * @param onTransitionFinishedCallback runnable to be execute when the transition is finshed
      */
-    public AngularMovementTransitionExecuter(float initalAngle,
-                                             float finalAngle,
-                                             Vector2 windowDim,
-                                             Transition.Interpolator<Float> interpolator,
-                                             Transition.TransitionType transitionType,
-                                             Runnable onTransitionFinishedCallback) {
+    public AngularMovementTransitionCreator(float initalAngle,
+                                            float finalAngle,
+                                            Vector2 windowDim,
+                                            Transition.Interpolator<Float> interpolator,
+                                            Transition.TransitionType transitionType,
+                                            Runnable onTransitionFinishedCallback) {
 
         this.initalAngle = initalAngle;
         this.finalAngle = finalAngle;

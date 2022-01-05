@@ -7,7 +7,7 @@ import danogl.components.Transition;
  * Executes transition of a certain object
  * @author Ruth Yukhnovetsky
  */
-public interface TransitionExecuter {
+public interface TransitionCreator {
 
     Transition[] createTransitions(float cycleLength, GameObject gameObject);
 }

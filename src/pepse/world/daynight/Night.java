@@ -8,7 +8,7 @@ import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.transitions.ChangeOpacityTransitionExecutor;
-import pepse.util.TransitionExecuter;
+import pepse.util.TransitionCreator;
 
 import java.awt.*;
 
@@ -16,7 +16,7 @@ public class Night {
 
     //usage is like this instead of di because of the
     // static create function requirements :(
-    private final static TransitionExecuter transitionExecuter = new ChangeOpacityTransitionExecutor(
+    private final static TransitionCreator transitionExecuter = new ChangeOpacityTransitionExecutor(
             0,
             0.5f,
             Transition.CUBIC_INTERPOLATOR_FLOAT,

@@ -4,14 +4,14 @@ package pepse.transitions;
 import danogl.GameObject;
 import danogl.components.Transition;
 import danogl.util.Vector2;
-import pepse.util.TransitionExecuter;
+import pepse.util.TransitionCreator;
 
 /**
  * angle and size transition constructor
  *
  * @author Ruth Yukhnovetsky
  */
-public class AngleAxisAndSizeChangeTransitionExecutor implements TransitionExecuter {
+public class AngleAxisAndSizeChangeTransitionCreator implements TransitionCreator {
     private final float initialAngle;
     private final float finalAngle;
     private final Vector2 finalSize;
@@ -30,13 +30,13 @@ public class AngleAxisAndSizeChangeTransitionExecutor implements TransitionExecu
      * @param transitionType               type of transition
      * @param onTransitionFinishedCallback callback
      */
-    public AngleAxisAndSizeChangeTransitionExecutor(float initalAngle,
-                                                    float finalAngle,
-                                                    Vector2 finalSize,
-                                                    Transition.Interpolator<Float> interpolator,
-                                                    Transition.Interpolator<Vector2> vector2Interpolator,
-                                                    Transition.TransitionType transitionType,
-                                                    Runnable onTransitionFinishedCallback) {
+    public AngleAxisAndSizeChangeTransitionCreator(float initalAngle,
+                                                   float finalAngle,
+                                                   Vector2 finalSize,
+                                                   Transition.Interpolator<Float> interpolator,
+                                                   Transition.Interpolator<Vector2> vector2Interpolator,
+                                                   Transition.TransitionType transitionType,
+                                                   Runnable onTransitionFinishedCallback) {
         this.initialAngle = initalAngle;
         this.finalAngle = finalAngle;
         this.interpolator = interpolator;

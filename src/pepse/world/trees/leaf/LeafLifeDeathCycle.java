@@ -1,10 +1,11 @@
 package pepse.world.trees.leaf;
 
+import danogl.collisions.GameObjectCollection;
 import danogl.components.ScheduledTask;
-import danogl.util.Vector2;
+import pepse.configuration.GameLayers;
 import pepse.configuration.GameObjectsConfiguration;
 import pepse.configuration.TransitionConfiguration;
-import pepse.util.TransitionExecuter;
+import pepse.util.TransitionCreator;
 
 import java.util.Random;
 
@@ -14,38 +15,42 @@ import java.util.Random;
  * @author Ruth Yukhnovetsky
  */
 public class LeafLifeDeathCycle {
-    private final TransitionExecuter leafFallowingTransformation;
+    private final TransitionCreator leafFallowingTransformation;
+    private final GameObjectCollection collection;
     private final Random random;
     private final static int GRAVITY = 70;
 
     public LeafLifeDeathCycle(
-            TransitionExecuter leafFallowingTransformation,
+            TransitionCreator leafFallowingTransformation,
+            GameObjectCollection collection,
             Random random) {
         this.leafFallowingTransformation = leafFallowingTransformation;
+        this.collection = collection;
         this.random = random;
     }
 
     public void executeCycle(Leaf leaf) {
-        var leafOriginLocation = leaf.getCenter();
         var lifeLength = getLeafLifeLength();
         new ScheduledTask(
                 leaf,
                 lifeLength + TransitionConfiguration.LEAF_FADEOUT,
                 true,
-                () -> executeLeafFall(leaf, leafOriginLocation));
+                () -> executeLeafFall(leaf));
     }
 
-    private void executeLeafFall(Leaf leaf, Vector2 leafOriginLocation) {
-        var horizontalMovement = this.leafFallowingTransformation.createTransitions(
-                TransitionConfiguration.LEAF_WOOBLING_CYCLE,
-                leaf
-        )[0];
-        leaf.setTemporaryTransition(horizontalMovement);
-        leaf.transform().setAccelerationY(GRAVITY);
+    private void executeLeafFall(Leaf leaf) {
+        collection.removeGameObject(leaf, GameLayers.LEAF_LAYER);
+        var fallingLeaf = new FallingLeaf(leaf, this.leafFallowingTransformation);
 
-        leaf.renderer().fadeOut(
+        fallingLeaf.transform().setAccelerationY(GRAVITY);
+        collection.addGameObject(fallingLeaf, GameLayers.LEAF_LAYER);
+
+        fallingLeaf.renderer().fadeOut(
                 TransitionConfiguration.LEAF_FADEOUT,
-                () -> leaf.setCenter(leafOriginLocation));
+                () -> {
+                    collection.removeGameObject(fallingLeaf, GameLayers.LEAF_LAYER);
+                    collection.addGameObject(leaf, GameLayers.LEAF_LAYER);
+                });
 
     }
 
