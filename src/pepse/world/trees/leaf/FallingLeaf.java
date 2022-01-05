@@ -12,7 +12,10 @@ public class FallingLeaf extends Leaf {
     private final Transition transitionToExecute;
 
     public FallingLeaf(Leaf originalLeaf, TransitionCreator transitionCreator) {
-        super(originalLeaf.getTopLeftCorner(), originalLeaf.getDimensions(), originalLeaf.renderer().getRenderable());
+        super(originalLeaf.getTopLeftCorner(),
+                originalLeaf.getDimensions(),
+                originalLeaf.renderer().getRenderable());
+        this.renderer().setOpaqueness(originalLeaf.renderer().getOpaqueness());
         this.transitionToExecute = transitionCreator.createTransitions(
                 TransitionConfiguration.LEAF_WOOBLING_CYCLE,
                 this)[0];
