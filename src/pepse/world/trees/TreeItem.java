@@ -2,10 +2,12 @@ package pepse.world.trees;
 
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
+import danogl.components.GameObjectPhysics;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.configuration.GameLayers;
+import pepse.configuration.GameObjectsConfiguration;
 import pepse.util.ColorSupplier;
 import pepse.util.GameObjectsContainer;
 import pepse.util.TemporaryItem;
@@ -24,8 +26,6 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
 
     private final static Color TRUNK_COLOR = new Color(100, 50, 20);
     private final static Color LEAVES_COLOR = new Color(50, 200, 30);
-
-    private final static int LEAF_SIZE = 25;
     private final LeafLifeDeathCycle leafLifeDeathCycle;
 
     private final ArrayList<GameObject> leafList;
@@ -53,6 +53,9 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
         this.leafLifeDeathCycle = leafLifeDeathCycle;
         this.leafList = new ArrayList<>();
 
+        physics().preventIntersectionsFromDirection(Vector2.ZERO);
+        physics().setMass(GameObjectPhysics.IMMOVABLE_MASS);
+
         createLeaves(topLeftCorner, dimensions);
 
     }
@@ -66,12 +69,12 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
         int x1 = leafTop + leafyRange;
         int y0 = (int) top.y() - leafyRange;
         int y1 = (int) top.y() + leafyRange;
-        for (int i = x0; i < x1; i += LEAF_SIZE) {
+        for (int i = x0; i < x1; i += GameObjectsConfiguration.LEAF_BASE_SIZE.x()) {
 
             var leafRectangle = new RectangleRenderable(ColorSupplier.approximateColor(LEAVES_COLOR));
-            for (int j = y0; j < y1; j += LEAF_SIZE) {
+            for (int j = y0; j < y1; j += GameObjectsConfiguration.LEAF_BASE_SIZE.y()) {
                 var leaf = new Leaf(new Vector2(i, j),
-                        new Vector2(LEAF_SIZE, LEAF_SIZE),
+                        GameObjectsConfiguration.LEAF_BASE_SIZE,
                         leafRectangle);
 
                 this.leafTransitionHandler.handleLeafTransition(leaf);

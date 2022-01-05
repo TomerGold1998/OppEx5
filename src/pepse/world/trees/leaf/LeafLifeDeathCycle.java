@@ -1,7 +1,6 @@
 package pepse.world.trees.leaf;
 
 import danogl.components.ScheduledTask;
-import danogl.components.Transition;
 import danogl.util.Vector2;
 import pepse.configuration.GameObjectsConfiguration;
 import pepse.configuration.TransitionConfiguration;
@@ -31,8 +30,8 @@ public class LeafLifeDeathCycle {
         var lifeLength = getLeafLifeLength();
         new ScheduledTask(
                 leaf,
-                lifeLength,
-                false,
+                lifeLength + TransitionConfiguration.LEAF_FADEOUT,
+                true,
                 () -> executeLeafFall(leaf, leafOriginLocation));
     }
 
@@ -46,10 +45,7 @@ public class LeafLifeDeathCycle {
 
         leaf.renderer().fadeOut(
                 TransitionConfiguration.LEAF_FADEOUT,
-                () -> {
-                    leaf.setCenter(leafOriginLocation);
-                    this.executeCycle(leaf);
-                });
+                () -> leaf.setCenter(leafOriginLocation));
 
     }
 

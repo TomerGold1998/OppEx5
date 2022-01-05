@@ -32,6 +32,7 @@ public class GameObjectsConfiguration {
     //LEAF
     public final static int LEAF_MAX_LIFE = 180;
     public final static int LEAF_MIN_LIFE = 3;
+    public final static Vector2 LEAF_BASE_SIZE = new Vector2(30,30);
 
 
     //BONUS

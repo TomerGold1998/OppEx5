@@ -26,8 +26,10 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
 
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final int TERRAIN_DEPTH = 20;
-    private static final int INITAL_GROUND_LEVEL = 100;
-    private static final int NOISE_FACTOR = 2;
+    private static final int INITAL_GROUND_LEVEL = 200;
+    private static final int NOISE_FACTOR = 8;
+    private static final int GROUND_HEIGHT_NEIGHBORS_RANGE = 30;
+
     private final HashMap<Integer, Float> groundHeights;
 
 
@@ -48,6 +50,18 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
      * @param x location
      */
     public float groundHeightAt(float x) {
+        if (groundHeights.containsKey((int) x))
+            return groundHeights.get((int) x);
+        var leftNeighboorValue = getRawGroundHeight(x - GROUND_HEIGHT_NEIGHBORS_RANGE);
+        var rightNeighborValue = getRawGroundHeight(x + GROUND_HEIGHT_NEIGHBORS_RANGE);
+
+        var myAvgValue = (leftNeighboorValue + rightNeighborValue) / 2;
+        groundHeights.put((int) x, myAvgValue);
+        return myAvgValue;
+    }
+
+    private float getRawGroundHeight(float x) {
+        // using the ground height in a raw way - no averaging
         if (groundHeights.containsKey((int) x))
             return groundHeights.get((int) x);
         var value = INITAL_GROUND_LEVEL +

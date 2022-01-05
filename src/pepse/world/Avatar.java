@@ -1,29 +1,32 @@
 package pepse.world;
 
-import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.gui.ImageReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.configuration.GameObjectsConfiguration;
+import pepse.util.AnimatedGameObject;
+import pepse.util.MovementOptions;
 import pepse.world.movement.*;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 
-public class Avatar extends GameObject {
+public class Avatar extends AnimatedGameObject {
 
 
     private final static int LEFT_RIGHT_MOVEMENT_SPEED = 300;
     private final static int UP_DOWN_MOVEMENT_SPEED = 300;
     private final static int FLY_MOVEMENT_SPEED = 10;
     private final static int GRAVITY = 500;
+    private final static int MAX_CRASH_SPEED = 700;
 
     private final MovementAnimation animationHandler;
     private final UserInputListener userInputListener;
-    private final HashMap<Integer, MovementHandler> keyToMovement;
+    private final HashMap<MovementOptions, MovementHandler> keyToMovement;
     private final AvatarEnergyHandler energyHandler;
+    private MovementOptions currentMovementOption;
 
     /**
      * Construct a new GameObject instance.
@@ -40,7 +43,7 @@ public class Avatar extends GameObject {
                   Vector2 dimensions,
                   Renderable renderable,
                   UserInputListener userInputListener,
-                  HashMap<Integer, MovementHandler> keyToMovement,
+                  HashMap<MovementOptions, MovementHandler> keyToMovement,
                   AvatarEnergyHandler energyHandler,
                   MovementAnimation animationHandler) {
         super(topLeftCorner, dimensions, renderable);
@@ -49,10 +52,15 @@ public class Avatar extends GameObject {
         this.keyToMovement = keyToMovement;
         this.energyHandler = energyHandler;
         this.animationHandler = animationHandler;
-        this.physics().preventIntersectionsFromDirection(Vector2.ZERO);
+
         this.transform().setAccelerationY(GRAVITY);
+        currentMovementOption = MovementOptions.Standing;
     }
 
+    @Override
+    public MovementOptions getCurrentMovement() {
+        return currentMovementOption;
+    }
 
     /**
      * Execute update on the game object, handles key change events
@@ -61,40 +69,64 @@ public class Avatar extends GameObject {
      */
     public void update(float deltaTime) {
         super.update(deltaTime);
-        var keyPressed = false;
+        handleAvatarCrash();
+        handleAvatarMovement();
+        HandleAvatarEnergy();
 
-        if (userInputListener.isKeyPressed(KeyEvent.VK_LEFT) &&
-                !userInputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
-            keyToMovement.get(KeyEvent.VK_LEFT).move(this);
-            keyPressed = true;
-        }
+        this.animationHandler.updateRender(this);
+    }
 
-        if (userInputListener.isKeyPressed(KeyEvent.VK_RIGHT) &&
-                !userInputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
-            keyToMovement.get(KeyEvent.VK_RIGHT).move(this);
-            keyPressed = true;
-        }
+    private void handleAvatarCrash() {
+        if (this.getVelocity().y() > MAX_CRASH_SPEED)
+            this.transform().setVelocityY(MAX_CRASH_SPEED);
+    }
 
-        if (userInputListener.isKeyPressed(KeyEvent.VK_SPACE) &&
-                userInputListener.isKeyPressed(KeyEvent.VK_SHIFT)) {
-
-            keyToMovement.get(KeyEvent.VK_SHIFT).move(this);
-            keyPressed = true;
-        } else if (userInputListener.isKeyPressed(KeyEvent.VK_SPACE)) {
-            keyToMovement.get(KeyEvent.VK_SPACE).move(this);
-            keyPressed = true;
-        }
-
-        if (!keyPressed) {
-            this.setVelocity(new Vector2(0, this.getVelocity().y()));
-        }
-
+    private void HandleAvatarEnergy() {
         if (this.getVelocity().y() == 0) {
             // object is resting, increase energy level
             this.energyHandler.increaseLevel();
         }
+    }
 
-        this.animationHandler.updateRender(this, deltaTime);
+    private void tryExecuteMove(MovementOptions option) {
+        var moved = keyToMovement.get(option).move(this);
+        if (moved)
+            currentMovementOption = option;
+    }
+
+    private void handleAvatarMovement() {
+        var keyPressed = false;
+
+        //Left movement
+        if (userInputListener.isKeyPressed(KeyEvent.VK_LEFT) &&
+                !userInputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
+            tryExecuteMove(MovementOptions.Left);
+            keyPressed = true;
+
+        }
+
+        //Right movement
+        if (userInputListener.isKeyPressed(KeyEvent.VK_RIGHT) &&
+                !userInputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
+            tryExecuteMove(MovementOptions.Right);
+            keyPressed = true;
+        }
+
+        //Flying movement
+        if (userInputListener.isKeyPressed(KeyEvent.VK_SPACE) &&
+                userInputListener.isKeyPressed(KeyEvent.VK_SHIFT)) {
+            tryExecuteMove(MovementOptions.Flying);
+            keyPressed = true;
+        } else if (userInputListener.isKeyPressed(KeyEvent.VK_SPACE)) {
+            //jumping movement
+            tryExecuteMove(MovementOptions.Jumping);
+            keyPressed = true;
+        }
+
+        if (!keyPressed) {
+            currentMovementOption = MovementOptions.Standing;
+            this.setVelocity(new Vector2(0, this.getVelocity().y()));
+        }
     }
 
 
@@ -106,14 +138,14 @@ public class Avatar extends GameObject {
 
         var energyHandler = new AvatarEnergyHandler(GameObjectsConfiguration.AVATAR_ENERGY);
         //Cannot use DI because of the must-have create functions!!
-        var movementHashMap = new HashMap<Integer, MovementHandler>();
-        movementHashMap.put(KeyEvent.VK_LEFT,
+        var movementHashMap = new HashMap<MovementOptions, MovementHandler>();
+        movementHashMap.put(MovementOptions.Left,
                 new AvatarMoveLeftAndRightHandler(LEFT_RIGHT_MOVEMENT_SPEED, Vector2.LEFT));
-        movementHashMap.put(KeyEvent.VK_RIGHT,
+        movementHashMap.put(MovementOptions.Right,
                 new AvatarMoveLeftAndRightHandler(LEFT_RIGHT_MOVEMENT_SPEED, Vector2.RIGHT));
-        movementHashMap.put(KeyEvent.VK_SPACE,
+        movementHashMap.put(MovementOptions.Jumping,
                 new AvatarMoveUpHandler(UP_DOWN_MOVEMENT_SPEED));
-        movementHashMap.put(KeyEvent.VK_SHIFT,
+        movementHashMap.put(MovementOptions.Flying,
                 new AvatarFlyMovementHandler(FLY_MOVEMENT_SPEED, energyHandler));
 
         var animationHandler = new AvatarMovementAnimation(
@@ -130,7 +162,9 @@ public class Avatar extends GameObject {
                 movementHashMap,
                 energyHandler,
                 animationHandler);
+        avatar.physics().preventIntersectionsFromDirection(Vector2.ZERO);
         gameObjects.addGameObject(avatar, layer);
         return avatar;
     }
+
 }

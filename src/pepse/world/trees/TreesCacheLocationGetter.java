@@ -1,13 +1,14 @@
 package pepse.world.trees;
 
 import danogl.util.Vector2;
+import pepse.configuration.GameObjectsConfiguration;
+import pepse.util.GameObjectVector;
 import pepse.util.GroundHeightCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 /**
  * gets a list of location using cache of used locations
@@ -18,10 +19,11 @@ public class TreesCacheLocationGetter implements TreesLocationGetter {
 
     private int maxKnownRange;
     private int minKnownRange;
-    private final TreeMap<Integer, Vector2> currentTreesLocations;
+    private final TreeMap<Integer, GameObjectVector> currentTreesLocations;
     private final Random random;
 
     private final static int RANDOM_TREE_CHANCE = 15;
+    private final static int MIN_TREE_BUFFER = 40;
 
 
     public TreesCacheLocationGetter(GroundHeightCalculator groundHeightCalculator,
@@ -35,7 +37,7 @@ public class TreesCacheLocationGetter implements TreesLocationGetter {
     }
 
     @Override
-    public List<Vector2> getTreesLocationInRange(int minX, int maxX) {
+    public List<GameObjectVector> getTreesDataInRange(int minX, int maxX) {
         if (maxX > this.maxKnownRange) {
             addRandomTreeLocation(this.maxKnownRange, maxX);
             this.maxKnownRange = maxX;
@@ -50,10 +52,28 @@ public class TreesCacheLocationGetter implements TreesLocationGetter {
 
     private void addRandomTreeLocation(int from, int to) {
         for (var i : groundHeightCalculator.getPossibleFixedItemsLocation(from, to)) {
-            if (this.random.nextInt(RANDOM_TREE_CHANCE) == 1)
-                this.currentTreesLocations.put(
-                        i,
-                        new Vector2(i, groundHeightCalculator.gameObjectHeightAt(i)));
+            if (this.random.nextInt(RANDOM_TREE_CHANCE) == 1) {
+                if (!this.currentTreesLocations.containsKey(i) &&
+                        this.currentTreesLocations
+                                .subMap(i - MIN_TREE_BUFFER, i + MIN_TREE_BUFFER)
+                                .isEmpty()) {
+                    var randomSize = generateTreeRandomSize();
+                    this.currentTreesLocations.put(
+                            i,
+                            new GameObjectVector(i,
+                                    groundHeightCalculator.gameObjectHeightAt(i),
+                                    randomSize.x(),
+                                    randomSize.y()));
+                }
+            }
         }
+    }
+
+    private Vector2 generateTreeRandomSize() {
+        return new Vector2(
+                GameObjectsConfiguration.TREE_WIDTH_OPTIONS[
+                        this.random.nextInt(GameObjectsConfiguration.TREE_WIDTH_OPTIONS.length)],
+                GameObjectsConfiguration.TREE_HEIGHT_OPTIONS[
+                        this.random.nextInt(GameObjectsConfiguration.TREE_HEIGHT_OPTIONS.length)]);
     }
 }
