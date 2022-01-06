@@ -1,9 +1,9 @@
-package pepse.util;
+package pepse.util.unique_game_objects;
 
 import danogl.util.Vector2;
 
 /**
- * game obj vector class
+ * Includes data about the game object height width and position
  */
 public class GameObjectVector {
     private final float width;

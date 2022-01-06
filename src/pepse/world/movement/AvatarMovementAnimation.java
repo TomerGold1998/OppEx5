@@ -2,8 +2,8 @@ package pepse.world.movement;
 
 import danogl.gui.rendering.AnimationRenderable;
 import danogl.gui.rendering.Renderable;
-import pepse.util.AnimatedGameObject;
 import pepse.util.MovementOptions;
+import pepse.util.unique_game_objects.AnimatedGameObject;
 
 /**
  * Handles the avatar movement render change
@@ -17,6 +17,7 @@ public class AvatarMovementAnimation implements MovementAnimation {
     private final Renderable walkingLeftAvatar;
     private final Renderable walkingRightAvatar;
     private final Renderable flyingAvatar;
+
     private MovementOptions lastMovement;
 
     /**
@@ -59,6 +60,10 @@ public class AvatarMovementAnimation implements MovementAnimation {
             gameObject.renderer().setIsFlippedHorizontally(gameObject.getVelocity().x() < 0);
     }
 
+    /**
+     * changes the game object render after some kinda of change occurred
+     * @param gameObject game object to change its movement
+     */
     private void changeRender(AnimatedGameObject gameObject) {
         if (gameObject.getCurrentMovement() == MovementOptions.Standing) {
             gameObject.renderer().setRenderable(this.staticAvatar);
@@ -68,6 +73,11 @@ public class AvatarMovementAnimation implements MovementAnimation {
         this.lastMovement = gameObject.getCurrentMovement();
     }
 
+    /**
+     * Handle the game object movement in case it is not static
+     *
+     * @param gameObject game object to animate
+     */
     private void handleAvatarMovement(AnimatedGameObject gameObject) {
         var gameObjectMovement = gameObject.getCurrentMovement();
         if (gameObject.getVelocity().y() != 0) {

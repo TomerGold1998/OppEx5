@@ -6,6 +6,8 @@ import danogl.components.CoordinateSpace;
 import danogl.components.Transition;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.util.Vector2;
+import pepse.configuration.GameObjectsConfiguration;
+import pepse.configuration.TransitionConfiguration;
 import pepse.transitions.AngularMovementTransitionCreator;
 
 import java.awt.*;
@@ -15,10 +17,6 @@ import java.awt.*;
  * @author Tomer Goldberg
  */
 public class Sun {
-
-    private static int SUN_SIZE = 200;
-    private static int SUN_INITAL_ANGLE = 0;
-    private static int SUN_FINAL_ANGLE = 360;
 
     /**
      * creator of sun
@@ -35,8 +33,8 @@ public class Sun {
             float cycleLength) {
 
         var transition = new AngularMovementTransitionCreator(
-                SUN_INITAL_ANGLE,
-                SUN_FINAL_ANGLE,
+                TransitionConfiguration.SUN_INITAL_ANGLE,
+                TransitionConfiguration.SUN_FINAL_ANGLE,
                 windowDimensions,
                 Transition.LINEAR_INTERPOLATOR_FLOAT,
                 Transition.TransitionType.TRANSITION_LOOP,
@@ -44,11 +42,9 @@ public class Sun {
 
         var sunRenderable = new OvalRenderable(Color.YELLOW);
         var sun = new GameObject(Vector2.ZERO,
-                new Vector2(SUN_SIZE, SUN_SIZE),
+                GameObjectsConfiguration.SUN_SIZE,
                 sunRenderable);
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
-        sun.setCenter(new Vector2(windowDimensions.x() / 4,
-                windowDimensions.y() - windowDimensions.y() / 4));
         sun.setTag("sun");
 
         transition.createTransitions(cycleLength, sun);

@@ -1,4 +1,4 @@
-package pepse.util;
+package pepse.util.text;
 
 import danogl.gui.UserInputListener;
 
@@ -77,8 +77,12 @@ public class GameTextInputGetter {
         this.output = "";
     }
 
-    //adds a character the to output String, if the current word length is at max size,
-    //its removes the first char entered, and adds the new char to the last spot
+    /**
+     * adds a character the to output String, if the current word length is at max size,
+     * its removes the first char entered, and adds the new char to the last spot
+     *
+     * @param character char to add
+     */
     private void addWordToOutput(Character character) {
         if (this.output.length() == this.maxWordLength) {
             var subOutput = this.output.substring(1);

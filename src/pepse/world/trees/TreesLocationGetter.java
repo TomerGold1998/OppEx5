@@ -1,6 +1,6 @@
 package pepse.world.trees;
 
-import pepse.util.GameObjectVector;
+import pepse.util.unique_game_objects.GameObjectVector;
 
 import java.util.List;
 

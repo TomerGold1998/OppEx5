@@ -2,7 +2,7 @@ package pepse.world.trees;
 
 import danogl.collisions.GameObjectCollection;
 import danogl.util.Vector2;
-import pepse.util.SurfaceCreator;
+import pepse.util.surface.SurfaceCreator;
 import pepse.world.trees.leaf.LeafLifeDeathCycle;
 import pepse.world.trees.leaf.LeafTransitionHandler;
 
@@ -48,12 +48,15 @@ public class Tree implements SurfaceCreator {
      * @param maxX end range of tree creation
      */
     public void createInRange(int minX, int maxX) {
+
+        // gets the trees to generate in the range
         var treesData = this.treesLocationGetter.getTreesDataInRange(minX, maxX);
         for (var treeData : treesData) {
 
             var treeBottom = treeData.getLocationVector();
             var treeDim = treeData.getSizeVector();
 
+            //adds the trees
             var createdTree = TreeItem.create(
                     this.gameObjectCollection,
                     treeBottom,

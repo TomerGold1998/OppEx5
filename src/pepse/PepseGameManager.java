@@ -14,11 +14,11 @@ import pepse.configuration.GameLayers;
 import pepse.configuration.GameObjectsConfiguration;
 import pepse.configuration.TransitionConfiguration;
 import pepse.transitions.AngleAxisAndSizeChangeTransitionCreator;
-import pepse.transitions.ChangeOpacityTransitionExecutor;
+import pepse.transitions.ChangeOpacityTransitionCreator;
 import pepse.transitions.HorizontalTransitionCreator;
-import pepse.util.GameTextInputGetter;
-import pepse.util.SurfaceCreator;
-import pepse.util.WordToActionHandler;
+import pepse.util.surface.SurfaceCreator;
+import pepse.util.text.GameTextInputGetter;
+import pepse.util.text.WordToActionHandler;
 import pepse.world.*;
 import pepse.world.daynight.BounsSunItem;
 import pepse.world.daynight.Night;
@@ -35,6 +35,9 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.function.Consumer;
 
+/**
+ * Game Manager class
+ */
 public class PepseGameManager extends GameManager {
 
     private final static int GAME_DISPLAY_CREATE_BUFFER = 200;
@@ -43,6 +46,14 @@ public class PepseGameManager extends GameManager {
     private BounsSunItem bounsSunItem;
     private Random random;
 
+    /**
+     * Starts new Pepse Game!
+     *
+     * @param imageReader      image reader
+     * @param soundReader      sound reader
+     * @param inputListener    input listener
+     * @param windowController window controller
+     */
     @Override
     public void initializeGame(ImageReader imageReader,
                                SoundReader soundReader,
@@ -122,7 +133,7 @@ public class PepseGameManager extends GameManager {
     }
 
     private Tree createTrees(GameObjectCollection gameObjects, Vector2 windowDim, Terrain terrain, Avatar avatar) {
-        var leafOpacity = new ChangeOpacityTransitionExecutor(
+        var leafOpacity = new ChangeOpacityTransitionCreator(
                 0.3f,
                 0.6f,
                 Transition.CUBIC_INTERPOLATOR_FLOAT,
@@ -167,6 +178,17 @@ public class PepseGameManager extends GameManager {
                 true);
     }
 
+    /**
+     * GAME BONUS !
+     * ENTER keyboard oop to have a message on the sun
+     * (might need to be a bit slow LIKE O O P \ y a h e l
+     * <p>
+     * ENTER the name of yahel for a picture of the best metarelet on the sun!
+     *
+     * @param imageReader   image reader
+     * @param inputListener input listener
+     * @param sun           sun game object!
+     */
     private void createGameBonus(ImageReader imageReader,
                                  UserInputListener inputListener,
                                  GameObject sun) {
@@ -195,6 +217,12 @@ public class PepseGameManager extends GameManager {
         this.wordToActionHandler = new WordToActionHandler(wordToActionMap, gameTextInputGetter);
     }
 
+    /**
+     * Called when a game update is called. regenerate game surfaces and reads
+     * user keyboard input for our bonus!
+     *
+     * @param deltaTime time passed since last update in seconds
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);

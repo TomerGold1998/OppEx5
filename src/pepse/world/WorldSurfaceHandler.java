@@ -43,7 +43,10 @@ public class WorldSurfaceHandler {
      * remove old surfaces (with a buffer) in a area that is not near our object to follow
      */
     public void updateSurface() {
+        // creates the needed to be added surfaces
         this.infiniteWorldCreator.updateSurfaces((int) this.objectToFollow.getCenter().x());
+
+        //valid range => range that we want to have game object's in
 
         var validObjectRangeFrom = this.objectToFollow.getCenter().x() -
                 ((this.windowDim.x() / 2)

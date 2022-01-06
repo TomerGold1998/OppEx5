@@ -9,8 +9,8 @@ import danogl.util.Vector2;
 import pepse.configuration.GameLayers;
 import pepse.configuration.GameObjectsConfiguration;
 import pepse.util.ColorSupplier;
-import pepse.util.GameObjectsContainer;
 import pepse.util.TemporaryItem;
+import pepse.util.unique_game_objects.GameObjectsContainer;
 import pepse.world.trees.leaf.Leaf;
 import pepse.world.trees.leaf.LeafLifeDeathCycle;
 import pepse.world.trees.leaf.LeafTransitionHandler;
@@ -61,30 +61,48 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
         createLeaves(topLeftCorner, dimensions);
     }
 
-    private void createLeaves(Vector2 top, Vector2 trunkDimensions) {
+    /**
+     * Creating leafs around the trunk
+     *
+     * @param topLeftPosition the tree top location
+     * @param trunkDimensions the tree's trunk dimensions
+     */
+    private void createLeaves(Vector2 topLeftPosition, Vector2 trunkDimensions) {
         //creating leaves for each trunk
         int leafyRange = (int) trunkDimensions.y() / 4;
-        int leafTop = (int) (top.x() + trunkDimensions.x() / 2);
+        int leafTop = (int) (topLeftPosition.x() + trunkDimensions.x() / 2);
 
-        int x0 = leafTop - leafyRange - (int) (trunkDimensions.x() / 2);
-        int x1 = leafTop + leafyRange;
-        int y0 = (int) top.y() - leafyRange;
-        int y1 = (int) top.y() + leafyRange;
-        for (int i = x0; i < x1; i += GameObjectsConfiguration.LEAF_BASE_SIZE.x()) {
+        int minLeafRangeX = leafTop - leafyRange - (int) (trunkDimensions.x() / 2);
+        int maxLeafRangeX = leafTop + leafyRange;
+        int minLeafRangeY = (int) topLeftPosition.y() - leafyRange;
+        int maxLeafRangeY = (int) topLeftPosition.y() + leafyRange;
 
-            var leafRectangle = new RectangleRenderable(ColorSupplier.approximateColor(LEAVES_COLOR));
-            for (int j = y0; j < y1; j += GameObjectsConfiguration.LEAF_BASE_SIZE.y()) {
-                var leaf = new Leaf(new Vector2(i, j),
-                        GameObjectsConfiguration.LEAF_BASE_SIZE,
-                        leafRectangle);
+        for (int x = minLeafRangeX; x < maxLeafRangeX; x += GameObjectsConfiguration.LEAF_BASE_SIZE.x())
+            for (int y = minLeafRangeY; y < maxLeafRangeY; y += GameObjectsConfiguration.LEAF_BASE_SIZE.y())
+                addLeafToGame(new Vector2(x, y));
 
-                this.leafTransitionHandler.handleLeafTransition(leaf);
-                this.leafLifeDeathCycle.executeCycle(leaf);
-                this.leafList.add(leaf);
 
-                this.collection.addGameObject(leaf, GameLayers.LEAF_LAYER);
-            }
-        }
+    }
+
+    /**
+     * adds leaf to the game
+     *
+     * @param location location to add the leaf to
+     */
+    private void addLeafToGame(Vector2 location) {
+        var leafRectangle = new RectangleRenderable(ColorSupplier.approximateColor(LEAVES_COLOR));
+        var leaf = new Leaf(location,
+                GameObjectsConfiguration.LEAF_BASE_SIZE,
+                leafRectangle);
+
+        // handle the adding for transitions for the tree
+        this.leafTransitionHandler.handleLeafTransition(leaf);
+
+        // handle the leaf life time
+        this.leafLifeDeathCycle.executeCycle(leaf);
+        this.leafList.add(leaf);
+
+        this.collection.addGameObject(leaf, GameLayers.LEAF_LAYER);
     }
 
     /**
@@ -95,6 +113,16 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
     @Override
     public List<GameObject> getInnerGameObjects() {
         return this.leafList;
+    }
+
+    /**
+     * removes all of the leafs from the game!
+     */
+    @Override
+    public void removeInnerGameObjects() {
+        for (var leaf : this.leafList) {
+            this.collection.removeGameObject(leaf, GameLayers.LEAF_LAYER);
+        }
     }
 
     /**

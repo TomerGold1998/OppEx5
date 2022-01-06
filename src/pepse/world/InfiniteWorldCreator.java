@@ -1,11 +1,13 @@
 package pepse.world;
 
-import pepse.util.SurfaceCreator;
+import pepse.util.surface.SurfaceCreator;
 
 import java.util.List;
 
 /**
  * infinite world creator
+ * Handles the creation for new surfaces
+ *
  * @author Tomer Goldberg
  */
 public class InfiniteWorldCreator {
@@ -13,16 +15,17 @@ public class InfiniteWorldCreator {
     private final List<SurfaceCreator> surfaces;
     private final int xBufferFromPoint;
 
-    private int minSurfaceGenerated = 0;
-    private int maxSurfaceGenerated = 0;
+    private int minSurfaceGenerated;
+    private int maxSurfaceGenerated;
 
     private static final int minAreaToRegenerate = 100;
 
     /**
      * constructor
-     * @param surfaces surface of terrain
-     * @param xBufferFromPoint buffer porint
-     * @param initalX initial point coordinate x
+     *
+     * @param surfaces         list of SurfaceCreators
+     * @param xBufferFromPoint buffer print
+     * @param initalX          initial point coordinate x
      */
     public InfiniteWorldCreator(List<SurfaceCreator> surfaces,
                                 int xBufferFromPoint,
@@ -38,6 +41,7 @@ public class InfiniteWorldCreator {
 
     /**
      * update surface
+     *
      * @param currentX current x coordinate
      */
     public void updateSurfaces(int currentX) {
@@ -46,8 +50,13 @@ public class InfiniteWorldCreator {
             // no need for change, area already been buffered
             return;
         }
+
+        generateNewSurface(currentX);
+    }
+
+    private void generateNewSurface(int currentX) {
         var deltaXPositive = (currentX + this.xBufferFromPoint) - this.maxSurfaceGenerated;
-        var deltaXNegetive = this.minSurfaceGenerated - (currentX - this.xBufferFromPoint);
+        var deltaXNegative = this.minSurfaceGenerated - (currentX - this.xBufferFromPoint);
 
         if (deltaXPositive > minAreaToRegenerate) {
             for (var surface : this.surfaces)
@@ -57,14 +66,13 @@ public class InfiniteWorldCreator {
             maxSurfaceGenerated += deltaXPositive;
         }
 
-        if (deltaXNegetive > minAreaToRegenerate) {
+        if (deltaXNegative > minAreaToRegenerate) {
             for (var surface : this.surfaces)
                 surface.createInRange(
-                        this.minSurfaceGenerated - deltaXNegetive,
+                        this.minSurfaceGenerated - deltaXNegative,
                         this.minSurfaceGenerated);
-            minSurfaceGenerated -= deltaXNegetive;
+            minSurfaceGenerated -= deltaXNegative;
         }
-
     }
 
     /**

@@ -1,0 +1,69 @@
+tomer.gold.a
+ruthYukh
+
+Old UML Vs New UML:
+in the old uml, we used the strategy design pattern in more places than we could have had in the actual code.
+for example, avatar is not creating is own AvatarMovementAnimation but instead its receives it in its ctor via the MovementAnimation interface.
+this was made because we forgot about the exercise demand for the static Create function in several places in the code
+moreover, in the old uml, Terrain is 'implementing' GroundHeightCalculator,
+but its uses a GroundHeightCalculator object its receives via DI in its constructor. Also,
+Terrain does not know the PerlinNoise class, its uses the strategy design pattern using NoiseCreator interface
+this was consider because of the need to change the noise function without changing the Terrain class (Open close principle).
+This was also canceled because of the exercise demand for one specific ctor in the Terrain Class
+Finaly, the old uml does not contains some classes that we chose to add to the new uml as a result of
+code organization
+
+How we made our world infinite?
+we create an interface that is called SurfaceCreator, that interface is being implemented by the Terrain and Tree classes.
+A class called InfiniteWorldCreator receive a list of surfaceCreator and call the createInRange function
+for each item when needed ->its saves the 'current generated world range' and each game update call
+its calculating the new area to be generated.
+
+This of course created a huge performance issue! so we added a class that does the opposite - remove game items that are not in view range.
+TheRemoveUnusedGameObjects receive each update the current used game object minX and maxX range,
+it runs over all of the 'TemporaryItem' game objects (an interface we added in order to signal the RemoveUnusedGameObjects that a
+certain game object can be removed).
+And removes all of the game objects that are not in the minX, maxX range ( plus minus a certain buffer value).
+if a game object is a container of many game object that are needed to be removed - tree for example, it will call the
+abstract GameObjectsContainer remove inner game objects function.
+
+
+How did we implemented the trees ?
+that is quite the a general question to ask. but sure,
+the tree class is responsible for create the TreeItem in a certain range (surface creator).
+it uses the TreesCacheLocationGetter in order to known where to put tree in the game and what their size should be.
+TreesCacheLocationGetter saves all of the tree location in a cache, WHY ? -> because a tree might be created when we walked left,
+and then it will be remove when we will walk enough to the right. we would want the if the avatar will walk left again it will regenerate the same
+tree properties in the same location that the old tree used to be, for that we use TreeMap (because its based on location and ranges so a
+TreeMap is very useful to use in that case) in the TreesCacheLocationGetter.
+When a TreeItem is created, its creates its leaves. each leaf have a chance to get a SizeAndAngle transition,
+for that we use a class that get a leaf and randomly adds its transition (for blowing in the wind effect),
+that class is called LeafTransitionHandler.
+For the Leaves life death cycle we also create a class called LeafLifeDeathCycle,
+how does that class works? -> we pass a leaf to its executeCycle function,
+the function then randomly chose a life cycle for that leaf and uses ScheduledTask,
+when it is time for leaf to die, we create a new FallingLeaf object that replaces the Leaf object,
+The FallingLeaf object is being execute a Horizontal movement Transition, this is for the wind woobling effect.
+when the Falling leaf hits the ground, its waits until it is completely
+faded out and then it is being remove + the original leaf object is being re-added the the game.
+Why we create a new FallingLeaf object -> huge performance boost! only the FallingLeaf is overriding the onCollisionEnter
+so we remove a big amount of update that would have been called if we would have done it on a simple Leaf game object.
+
+The main dilemma was how much is too much OOP ?
+because each class we create can have some sort of interface for more 'generic' \ 'oop' type of implementation,
+but not all should, that causes us for some debates about when and where should we do more 'hard design'.
+the main design principle we used was the Strategy design pattern, because it really fits this 'game like' application
+when we might want to change some game object behaviour (for example, the avatar walking options, the leaf transitions etc.)
+without changing code. (Open close principle)
+
+We Added a cool bonus!
+when the game is running and the sun is shining write O O P or Y A H E L
+(enter o*2 and p in the keyboard (slowly) or yahel (slowly) in the keyboard.
+this will cause the sun to have the picture of our favourite metargelet or the sun to have text of a design pattern name.
+How did we do it ->
+in the game update function we added a class that is responsible acting on the user keyevents
+'WordToActionHandler', the class uses the GameTextInputGetter in order to read the user inserted keys and translate them to words.
+When the WordToActionHandler get a word from the GameTextInputGetter that he have a mapped action for, it execute the Action.
+we mapped 2 possible actions:
+the first is 'oop' to setAsText function in our SunBonusItem game object
+the second is 'yahel' to setAsImage function in our SunBonusItem game object.
