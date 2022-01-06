@@ -12,7 +12,6 @@ import pepse.util.TemporaryItem;
  */
 public class Block extends GameObject implements TemporaryItem {
     public static final int SIZE = 30;
-
     /**
      * constructor
      * @param topLeftCorner top left corner of block
