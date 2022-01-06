@@ -3,14 +3,15 @@ ruthYukh
 
 Old UML Vs New UML:
 in the old uml, we used the strategy design pattern in more places than we could have had in the actual code.
-for example, avatar is not creating is own AvatarMovementAnimation but instade its recives it in its ctor via the MovementAnimation interface.
-this was made because we forgot about the exercise demand for the static Create function in sevral places in the code
+for example, avatar is not creating is own AvatarMovementAnimation but instead its receives it in its ctor via the MovementAnimation interface.
+this was made because we forgot about the exercise demand for the static Create function in several places in the code
 moreover, in the old uml, Terrain is 'implementing' GroundHeightCalculator,
-but its uses a GroundHeightCalculator object its revices via DI in its constrctor. Also,
+but its uses a GroundHeightCalculator object its receives via DI in its constructor. Also,
 Terrain does not know the PerlinNoise class, its uses the strategy design pattern using NoiseCreator interface
 this was consider because of the need to change the noise function without changing the Terrain class (Open close principle).
 This was also canceled because of the exercise demand for one specific ctor in the Terrain Class
-
+Finaly, the old uml does not contains some classes that we chose to add to the new uml as a result of
+code organization
 
 How we made our world infinite?
 we create an interface that is called SurfaceCreator, that interface is being implemented by the Terrain and Tree classes.
@@ -40,7 +41,7 @@ for that we use a class that get a leaf and randomly adds its transition (for bl
 that class is called LeafTransitionHandler.
 For the Leaves life death cycle we also create a class called LeafLifeDeathCycle,
 how does that class works? -> we pass a leaf to its executeCycle function,
-the function then rnadomly chose a life cycle for that leaf and uses ScheduledTask,
+the function then randomly chose a life cycle for that leaf and uses ScheduledTask,
 when it is time for leaf to die, we create a new FallingLeaf object that replaces the Leaf object,
 The FallingLeaf object is being execute a Horizontal movement Transition, this is for the wind woobling effect.
 when the Falling leaf hits the ground, its waits until it is completely
@@ -51,9 +52,9 @@ so we remove a big amount of update that would have been called if we would have
 The main dilemma was how much is too much OOP ?
 because each class we create can have some sort of interface for more 'generic' \ 'oop' type of implementation,
 but not all should, that causes us for some debates about when and where should we do more 'hard design'.
-the main design principle we used was the Strategy desing pattern, because it really fits this 'game like' application
+the main design principle we used was the Strategy design pattern, because it really fits this 'game like' application
 when we might want to change some game object behaviour (for example, the avatar walking options, the leaf transitions etc.)
-without changing code. (Open close princple)
+without changing code. (Open close principle)
 
 We Added a cool bonus!
 when the game is running and the sun is shining write O O P or Y A H E L
@@ -61,7 +62,7 @@ when the game is running and the sun is shining write O O P or Y A H E L
 this will cause the sun to have the picture of our favourite metargelet or the sun to have text of a design pattern name.
 How did we do it ->
 in the game update function we added a class that is responsible acting on the user keyevents
-'WordToActionHandler', the class uses the GameTextInputGetter in order to read the user inserted keys and translte them to words.
+'WordToActionHandler', the class uses the GameTextInputGetter in order to read the user inserted keys and translate them to words.
 When the WordToActionHandler get a word from the GameTextInputGetter that he have a mapped action for, it execute the Action.
 we mapped 2 possible actions:
 the first is 'oop' to setAsText function in our SunBonusItem game object
