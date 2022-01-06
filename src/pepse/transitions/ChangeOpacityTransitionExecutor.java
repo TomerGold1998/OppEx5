@@ -19,7 +19,6 @@ public class ChangeOpacityTransitionExecutor implements TransitionCreator {
 
     /**
      * creates new ChangeOpacityTransitionExecutor
-     *
      * @param initialOpacity inital opacity for the transition
      * @param finalOpacity   final opacity for the transition
      * @param interpolator   Transition interpolator
@@ -39,8 +38,7 @@ public class ChangeOpacityTransitionExecutor implements TransitionCreator {
     }
 
     /**
-     * execute transition
-     *
+     * creaating and executing the opacity changer transition
      * @param cycleLength length of transition cycle
      * @param gameObject  game object to be transitioned
      */
@@ -54,8 +52,7 @@ public class ChangeOpacityTransitionExecutor implements TransitionCreator {
                 interpolator,
                 cycleLength / 2,
                 type,
-                onEnd
-        );
+                onEnd);
         return new Transition[]{transition};
     }
 }

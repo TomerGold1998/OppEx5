@@ -10,7 +10,6 @@ import java.awt.*;
 
 /**
  * used in order to case our bonus on the sun
- *
  * @author Tomer Goldberg
  */
 public class BounsSunItem extends GameObject {

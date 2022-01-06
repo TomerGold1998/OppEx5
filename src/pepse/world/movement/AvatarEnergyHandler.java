@@ -13,7 +13,7 @@ public class AvatarEnergyHandler {
     private boolean isRecharging = false;
 
     /**
-     * ctor for AvatarEnergyHandler
+     * creator for AvatarEnergyHandler
      *
      * @param initalLevel inital value for energy change
      */
@@ -55,6 +55,5 @@ public class AvatarEnergyHandler {
         } else {
             this.energyLevel -= CHANGE;
         }
-
     }
 }

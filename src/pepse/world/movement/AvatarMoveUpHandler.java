@@ -5,7 +5,6 @@ import danogl.util.Vector2;
 
 /**
  * handles 'jump' movement
- *
  * @author Tomer Goldberg
  */
 public class AvatarMoveUpHandler implements MovementHandler {
@@ -32,7 +31,6 @@ public class AvatarMoveUpHandler implements MovementHandler {
             gameObject.setVelocity(Vector2.UP
                     .mult(speed)
                     .add(new Vector2(gameObject.getVelocity().x(), 0)));
-
             return true;
         }
         return false;

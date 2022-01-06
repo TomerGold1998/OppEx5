@@ -8,12 +8,9 @@ import pepse.world.trees.leaf.LeafTransitionHandler;
 
 /**
  * adds trees to the game
- *
  * @author Ruth Yukhnovetsky
  */
 public class Tree implements SurfaceCreator {
-
-
 
     private final GameObjectCollection gameObjectCollection;
     private final int layer;
@@ -22,7 +19,15 @@ public class Tree implements SurfaceCreator {
     private final LeafTransitionHandler leafTransitionHandler;
     private final LeafLifeDeathCycle leafLifeDeathCycle;
 
-
+    /**
+     * tree constructor
+     * @param gameObjectCollection game obj collection
+     * @param windowDim window dimensions
+     * @param layer layer of tree
+     * @param treesLocationGetter gets location
+     * @param leafTransitionHandler leaf transition handler
+     * @param leafLifeDeathCycle leaf's life and death cycle
+     */
     public Tree(GameObjectCollection gameObjectCollection,
                 Vector2 windowDim,
                 int layer,
@@ -39,7 +44,6 @@ public class Tree implements SurfaceCreator {
 
     /**
      * creating trees in the game
-     *
      * @param minX start range of tree creation
      * @param maxX end range of tree creation
      */

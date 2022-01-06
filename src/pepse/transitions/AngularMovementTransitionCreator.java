@@ -30,7 +30,7 @@ public class AngularMovementTransitionCreator implements TransitionCreator {
      * @param windowDim                    the window size (used for calculating location by size)
      * @param interpolator                 a Transition interpolator
      * @param transitionType               TransitionType
-     * @param onTransitionFinishedCallback runnable to be execute when the transition is finshed
+     * @param onTransitionFinishedCallback runnable to be execute when the transition is finished
      */
     public AngularMovementTransitionCreator(float initalAngle,
                                             float finalAngle,
@@ -49,8 +49,7 @@ public class AngularMovementTransitionCreator implements TransitionCreator {
 
     /**
      * execute the transition
-     *
-     * @param cycleLength trnsition cycle length
+     * @param cycleLength transition cycle length
      * @param gameObject  game object to be executed on
      */
     @Override

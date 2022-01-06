@@ -5,14 +5,12 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
 /**
- * Leaf class to control movement
- *
+ * Leaf class creator
  * @author Ruth Yukhnovetsky
  */
 public class Leaf extends GameObject {
     /**
      * constructor of leaf in game
-     *
      * @param topLeftCorner top left corner
      * @param dimensions    leaf dimensions
      * @param renderable    rendering

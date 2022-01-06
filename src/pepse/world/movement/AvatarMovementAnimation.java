@@ -7,6 +7,7 @@ import pepse.util.MovementOptions;
 
 /**
  * Handles the avatar movement render change
+ * @author Tomer Goldberg
  */
 public class AvatarMovementAnimation implements MovementAnimation {
 
@@ -19,7 +20,7 @@ public class AvatarMovementAnimation implements MovementAnimation {
     private MovementOptions lastMovement;
 
     /**
-     * ctor for the avatar movement animation
+     * creator for the avatar movement animation
      *
      * @param staticAvatar static motion avatar
      * @param leftAvatar   left moving motion avatar
@@ -64,8 +65,6 @@ public class AvatarMovementAnimation implements MovementAnimation {
         } else {
             handleAvatarMovement(gameObject);
         }
-
-
         this.lastMovement = gameObject.getCurrentMovement();
     }
 

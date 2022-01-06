@@ -14,7 +14,6 @@ public abstract class GameObjectsContainer extends GameObject {
 
     /**
      * create new GameObjectsContainer
-     *
      * @param topLeftCorner topLeftCorner of the game object
      * @param dimensions    dimension of the game object
      * @param renderable    renderable for the game object
