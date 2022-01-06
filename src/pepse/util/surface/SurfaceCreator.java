@@ -1,5 +1,8 @@
-package pepse.util;
+package pepse.util.surface;
 
+/**
+ * interface for classes that create surfaces (trees / terrain etc)
+ */
 public interface SurfaceCreator {
 
     /**

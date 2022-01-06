@@ -1,11 +1,12 @@
 package pepse.world;
 
 import danogl.collisions.GameObjectCollection;
-import pepse.util.GameObjectsContainer;
 import pepse.util.TemporaryItem;
+import pepse.util.unique_game_objects.GameObjectsContainer;
 
 /**
- * remove unused game obj
+ * remove unused game obj, in oreder to support the infinite world
+ *
  * @author Tomer Goldberg
  */
 public class RemoveUnusedGameObjects {
@@ -40,10 +41,7 @@ public class RemoveUnusedGameObjects {
 
                 collection.removeGameObject(gameObject, layer);
                 if (gameObject instanceof GameObjectsContainer) {
-                    var innerObjects = ((GameObjectsContainer) gameObject).getInnerGameObjects();
-                    for (var innerGameObject : innerObjects) {
-                        collection.removeGameObject(innerGameObject, layer);
-                    }
+                    ((GameObjectsContainer) gameObject).removeInnerGameObjects();
                 }
             }
         }

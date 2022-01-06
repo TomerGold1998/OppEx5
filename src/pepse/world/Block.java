@@ -4,6 +4,7 @@ import danogl.GameObject;
 import danogl.components.GameObjectPhysics;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.configuration.GameObjectsConfiguration;
 import pepse.util.TemporaryItem;
 
 /**
@@ -11,7 +12,6 @@ import pepse.util.TemporaryItem;
  * @author Tomer Goldberg
  */
 public class Block extends GameObject implements TemporaryItem {
-    public static final int SIZE = 30;
 
     /**
      * constructor
@@ -19,7 +19,7 @@ public class Block extends GameObject implements TemporaryItem {
      * @param renderable renderable obj
      */
     public Block(Vector2 topLeftCorner, Renderable renderable) {
-        super(topLeftCorner, Vector2.ONES.mult(SIZE), renderable);
+        super(topLeftCorner, Vector2.ONES.mult(GameObjectsConfiguration.BLOCK_SIZE), renderable);
 
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
         physics().setMass(GameObjectPhysics.IMMOVABLE_MASS);

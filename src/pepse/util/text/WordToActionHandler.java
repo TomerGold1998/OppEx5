@@ -1,4 +1,6 @@
-package pepse.util;
+package pepse.util.text;
+
+import pepse.util.text.GameTextInputGetter;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -48,6 +50,7 @@ public class WordToActionHandler {
         for (var wordLength : wordsLengthToFollow) {
             var word = textInputGetter.getUserWord(wordLength);
             if (word != null && wordToAction.containsKey(word)) {
+                // passes the word to the 'action' from the Map
                 this.wordToAction.get(word).accept(word);
                 this.textInputGetter.reset();
                 break;

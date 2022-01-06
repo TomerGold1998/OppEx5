@@ -5,7 +5,7 @@ import danogl.collisions.Collision;
 import danogl.components.Transition;
 import danogl.util.Vector2;
 import pepse.configuration.TransitionConfiguration;
-import pepse.util.TransitionCreator;
+import pepse.transitions.TransitionCreator;
 import pepse.world.ReactingBlock;
 /**
  * create an object of leaf that replaces the original leaf on a tree when starts to fall

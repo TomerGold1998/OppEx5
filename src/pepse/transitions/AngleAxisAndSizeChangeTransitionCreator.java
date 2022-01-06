@@ -4,14 +4,14 @@ package pepse.transitions;
 import danogl.GameObject;
 import danogl.components.Transition;
 import danogl.util.Vector2;
-import pepse.util.TransitionCreator;
 
 /**
- * angle and size transition constructor
+ * angle and size transition creator
  *
  * @author Ruth Yukhnovetsky
  */
 public class AngleAxisAndSizeChangeTransitionCreator implements TransitionCreator {
+
     private final float initialAngle;
     private final float finalAngle;
     private final Vector2 finalSize;
@@ -62,6 +62,7 @@ public class AngleAxisAndSizeChangeTransitionCreator implements TransitionCreato
                 cycleLength,
                 this.transitionType,
                 onTransitionFinishedCallback);
+
         var sizeTransition = new Transition<>(
                 gameObject,
                 gameObject::setDimensions,

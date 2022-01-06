@@ -3,10 +3,9 @@ package pepse.transitions;
 import danogl.GameObject;
 import danogl.components.Transition;
 import danogl.util.Vector2;
-import pepse.util.TransitionCreator;
 
 /**
- * execute angular movement transition
+ * creates angular movement transition
  *
  * @author Tomer Goldberg
  */
@@ -48,7 +47,8 @@ public class AngularMovementTransitionCreator implements TransitionCreator {
     }
 
     /**
-     * execute the transition
+     * creates the transition
+     *
      * @param cycleLength transition cycle length
      * @param gameObject  game object to be executed on
      */
@@ -68,8 +68,14 @@ public class AngularMovementTransitionCreator implements TransitionCreator {
     }
 
 
+    /**
+     * gets the location on the screen by the angle
+     *
+     * @param angle angle, in dgrees
+     * @return location
+     */
     private Vector2 calculateSunPosition(float angle) {
-        // gets the location on the screen by the angle
+        //
         var majorRadius = this.windowDim.x() / MAJOR_RADIUS_CHANGE;
         var minorRadius = this.windowDim.x() / MINOR_RADIUS_CHANGE;
 

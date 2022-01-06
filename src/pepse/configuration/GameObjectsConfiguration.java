@@ -11,9 +11,13 @@ public class GameObjectsConfiguration {
     //GENERAL
     public final static int SEED = 42;
 
+    //Block
+    public final static int BLOCK_SIZE =  30;
 
     //SUN
     public final static Color SUN_HALO_COLOR = new Color(255, 255, 0, 20);
+    public final static Vector2 SUN_SIZE = new Vector2(200,200);
+    public final static Vector2 SUN_HALO_SIZE = new Vector2(220,220);
 
     //AVATAR
     public final static String STATIC_MALE_PATH = "./src/assets/static_man.png";

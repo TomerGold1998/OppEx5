@@ -7,8 +7,9 @@ import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-import pepse.transitions.ChangeOpacityTransitionExecutor;
-import pepse.util.TransitionCreator;
+import pepse.configuration.TransitionConfiguration;
+import pepse.transitions.ChangeOpacityTransitionCreator;
+import pepse.transitions.TransitionCreator;
 
 import java.awt.*;
 
@@ -18,11 +19,11 @@ import java.awt.*;
  */
 public class Night {
 
-    //usage is like this instead of di because of the
+    // usage is like this instead of di because of the
     // static create function requirements :(
-    private final static TransitionCreator transitionExecuter = new ChangeOpacityTransitionExecutor(
+    private final static TransitionCreator transitionCreator = new ChangeOpacityTransitionCreator(
             0,
-            0.5f,
+            TransitionConfiguration.NIGHT_MAX_OPACITY,
             Transition.CUBIC_INTERPOLATOR_FLOAT,
             Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
             null);
@@ -41,12 +42,13 @@ public class Night {
                                     int layer,
                                     Vector2 windowDimensions,
                                     float cycleLength) {
+
         Renderable renderable = new RectangleRenderable(Color.BLACK);
         GameObject night = new GameObject(Vector2.ZERO, windowDimensions, renderable);
         night.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         gameObjects.addGameObject(night, layer);
         night.setTag("night");
-        transitionExecuter.createTransitions(cycleLength, night);
+        transitionCreator.createTransitions(cycleLength, night);
         return night;
     }
 }

@@ -2,14 +2,13 @@ package pepse.transitions;
 
 import danogl.GameObject;
 import danogl.components.Transition;
-import pepse.util.TransitionCreator;
 
 /**
- * changing opacity of an object
+ * creates a transition that is changing opacity of an object
  *
  * @author Ruth Yukhnovetsky
  */
-public class ChangeOpacityTransitionExecutor implements TransitionCreator {
+public class ChangeOpacityTransitionCreator implements TransitionCreator {
 
     private final float initialOpacity;
     private final float finalOpacity;
@@ -25,11 +24,11 @@ public class ChangeOpacityTransitionExecutor implements TransitionCreator {
      * @param type           TransitionType
      * @param onEnd          function to execute on end of transition
      */
-    public ChangeOpacityTransitionExecutor(float initialOpacity,
-                                           float finalOpacity,
-                                           Transition.Interpolator<Float> interpolator,
-                                           Transition.TransitionType type,
-                                           Runnable onEnd) {
+    public ChangeOpacityTransitionCreator(float initialOpacity,
+                                          float finalOpacity,
+                                          Transition.Interpolator<Float> interpolator,
+                                          Transition.TransitionType type,
+                                          Runnable onEnd) {
         this.initialOpacity = initialOpacity;
         this.finalOpacity = finalOpacity;
         this.interpolator = interpolator;

@@ -1,9 +1,13 @@
-package pepse.util;
+package pepse.util.unique_game_objects;
 
 import danogl.GameObject;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.util.MovementOptions;
 
+/**
+ * Represent a game object that have some kind of movement (and therefore an animation)
+ */
 public abstract class AnimatedGameObject extends GameObject {
     /**
      * Construct a new AnimatedGameObject instance.

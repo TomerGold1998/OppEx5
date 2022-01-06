@@ -6,7 +6,7 @@ import danogl.gui.UserInputListener;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.configuration.GameObjectsConfiguration;
-import pepse.util.AnimatedGameObject;
+import pepse.util.unique_game_objects.AnimatedGameObject;
 import pepse.util.MovementOptions;
 import pepse.world.movement.*;
 
@@ -94,10 +94,11 @@ public class Avatar extends AnimatedGameObject {
         }
     }
 
-    private void tryExecuteMove(MovementOptions option) {
+    private boolean tryExecuteMove(MovementOptions option) {
         var moved = keyToMovement.get(option).move(this);
         if (moved)
             currentMovementOption = option;
+        return moved;
     }
 
     private void handleAvatarMovement() {
@@ -106,26 +107,22 @@ public class Avatar extends AnimatedGameObject {
         //Left movement
         if (userInputListener.isKeyPressed(KeyEvent.VK_LEFT) &&
                 !userInputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
-            tryExecuteMove(MovementOptions.Left);
-            keyPressed = true;
+            keyPressed = tryExecuteMove(MovementOptions.Left);
         }
 
         //Right movement
         if (userInputListener.isKeyPressed(KeyEvent.VK_RIGHT) &&
                 !userInputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
-            tryExecuteMove(MovementOptions.Right);
-            keyPressed = true;
+            keyPressed = tryExecuteMove(MovementOptions.Right);
         }
 
         //Flying movement
         if (userInputListener.isKeyPressed(KeyEvent.VK_SPACE) &&
                 userInputListener.isKeyPressed(KeyEvent.VK_SHIFT)) {
-            tryExecuteMove(MovementOptions.Flying);
-            keyPressed = true;
+            keyPressed = tryExecuteMove(MovementOptions.Flying);
         } else if (userInputListener.isKeyPressed(KeyEvent.VK_SPACE)) {
             //jumping movement
-            tryExecuteMove(MovementOptions.Jumping);
-            keyPressed = true;
+            keyPressed = tryExecuteMove(MovementOptions.Jumping);
         }
 
         if (!keyPressed) {

@@ -1,4 +1,4 @@
-package pepse.util;
+package pepse.util.unique_game_objects;
 
 import danogl.GameObject;
 import danogl.gui.rendering.Renderable;
@@ -27,4 +27,9 @@ public abstract class GameObjectsContainer extends GameObject {
      * for example (tree contains leaves etc.)
      */
     public abstract List<GameObject> getInnerGameObjects();
+
+    /**
+     * Called when the game object is needed to remove its inner game objects he has created
+     */
+    public abstract void removeInnerGameObjects();
 }

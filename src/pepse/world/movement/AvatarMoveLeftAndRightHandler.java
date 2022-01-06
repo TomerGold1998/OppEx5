@@ -11,7 +11,7 @@ import danogl.util.Vector2;
 public class AvatarMoveLeftAndRightHandler implements MovementHandler {
 
     private final int speed;
-    private Vector2 direction;
+    private final Vector2 direction;
 
     /**
      * constrctor for AvatarMoveLeftAndRightHandler
@@ -32,7 +32,8 @@ public class AvatarMoveLeftAndRightHandler implements MovementHandler {
      * @return true if moved the object successfully
      */
     public boolean move(GameObject gameObject) {
-        gameObject.setVelocity(direction.mult(speed).add(new Vector2(0, gameObject.getVelocity().y())));
+        gameObject.setVelocity(direction.mult(speed).add(
+                new Vector2(0, gameObject.getVelocity().y())));
         return true;
     }
 }
