@@ -22,7 +22,6 @@ public class AvatarFlyMovementHandler implements MovementHandler {
         this.energyHandler = energyHandler;
     }
 
-
     /**
      * moving the object upward if the current energy level allows it
      * @param gameObject the game object to move

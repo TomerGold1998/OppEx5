@@ -12,6 +12,10 @@ import pepse.util.TransitionCreator;
 
 import java.awt.*;
 
+/**
+ * night layer of game
+ * @author Ruth Yukhnovetsky
+ */
 public class Night {
 
     //usage is like this instead of di because of the

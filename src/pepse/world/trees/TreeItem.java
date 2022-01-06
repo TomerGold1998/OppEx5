@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * represent a game tree
+ * represent a tree item
+ * @author Ruth Yukhnovetsky
  */
 public class TreeItem extends GameObjectsContainer implements TemporaryItem {
 
@@ -33,12 +34,13 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
     private final LeafTransitionHandler leafTransitionHandler;
 
     /**
-     * constrctor for the tree object
-     *
-     * @param topLeftCorner tree top left position
-     * @param dimensions    tree truck size
-     * @param renderable    truck
-     * @param collection    game object collections
+     * constructor for tree object
+     * @param topLeftCorner top left corner of tree trunk
+     * @param dimensions tree dimensions
+     * @param renderable renderable
+     * @param collection obj collection
+     * @param leafTransitionHandler transition handler of leaf
+     * @param leafLifeDeathCycle leaf's life and cycle
      */
     public TreeItem(Vector2 topLeftCorner,
                     Vector2 dimensions,
@@ -57,7 +59,6 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
         physics().setMass(GameObjectPhysics.IMMOVABLE_MASS);
 
         createLeaves(topLeftCorner, dimensions);
-
     }
 
     private void createLeaves(Vector2 top, Vector2 trunkDimensions) {
@@ -97,7 +98,7 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
     }
 
     /**
-     * constructor of tree item
+     * creation of tree item
      *
      * @param collection     collection of game objects
      * @param bottomPosition lowest point
@@ -111,7 +112,7 @@ public class TreeItem extends GameObjectsContainer implements TemporaryItem {
             Vector2 truckDim,
             LeafTransitionHandler leafTransitionHandler,
             LeafLifeDeathCycle leafLifeDeathCycle) {
-
+        //the top left corner where leaves will start to grow
         var treeTopY = windowsDim.y() - bottomPosition.y() - truckDim.y();
 
         return new TreeItem(new Vector2(bottomPosition.x(), treeTopY),

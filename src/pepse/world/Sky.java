@@ -9,6 +9,10 @@ import danogl.util.Vector2;
 
 import java.awt.*;
 
+/**
+ * sky class
+ * @author Tomer Goldberg
+ */
 public class Sky {
     private static final Color BASIC_SKY_COLOR = Color.decode("#80C6E5");
 
@@ -21,7 +25,8 @@ public class Sky {
      * @return the added sky layer
      */
     public static GameObject create(GameObjectCollection gameObjects,
-                                    Vector2 windowDimensions, int skyLayer) {
+                                    Vector2 windowDimensions,
+                                    int skyLayer) {
         var sky = new GameObject(
                 Vector2.ZERO, windowDimensions,
                 new RectangleRenderable(BASIC_SKY_COLOR));

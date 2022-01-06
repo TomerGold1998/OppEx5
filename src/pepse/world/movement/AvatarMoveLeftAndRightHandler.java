@@ -13,7 +13,6 @@ public class AvatarMoveLeftAndRightHandler implements MovementHandler {
     private final int speed;
     private Vector2 direction;
 
-
     /**
      * constrctor for AvatarMoveLeftAndRightHandler
      *

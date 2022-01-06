@@ -8,10 +8,22 @@ import danogl.util.Vector2;
 
 import java.awt.*;
 
+/**
+ * sun halo creator
+ * @author Tomer Goldberg
+ */
 public class SunHalo {
 
     private static int SUN_HALO_SIZE = 210;
 
+    /**
+     * creating sun halo
+     * @param gameObjects this
+     * @param layer layer of halo
+     * @param sun sun
+     * @param color of halo
+     * @return halo
+     */
     public static GameObject create(
             GameObjectCollection gameObjects,
             int layer,

@@ -15,9 +15,9 @@ import java.util.List;
 
 /**
  * creating necessary blocks and lets other objects know the height of the terrain at a certain coordinate.
+ * @author Tomer Goldberg
  */
 public class Terrain implements GroundHeightCalculator, SurfaceCreator {
-
 
     private final GameObjectCollection gameObjects;
     private final int groundLayer;
@@ -32,7 +32,13 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
 
     private final HashMap<Integer, Float> groundHeights;
 
-
+    /**
+     * constructor
+     * @param gameObjects obj collection
+     * @param groundLayer layer of ground
+     * @param windowDimensions window dimensions
+     * @param seed random seed factor
+     */
     public Terrain(GameObjectCollection gameObjects,
                    int groundLayer,
                    Vector2 windowDimensions,
@@ -99,14 +105,8 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
         }
     }
 
-    /**
-     * Create a list of blocks from the X,Y location * number of TERRAIN_DEPTH
-     *
-     * @param x block x location
-     * @param y block top y location
-     * @return list of blocks
-     */
     private ArrayList<Block> createBlocksByDepth(float x, float y) {
+        //Create a list of blocks from the X,Y location * number of TERRAIN_DEPTH
         ArrayList<Block> blocks = new ArrayList<>();
         for (var i = 0; i < TERRAIN_DEPTH; i++) {
             if (i < 2) {
@@ -122,6 +122,12 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
         return blocks;
     }
 
+    /**
+     * get a location of item
+     * @param fromRange from
+     * @param toRange   to
+     * @return optional locations
+     */
     @Override
     public List<Integer> getPossibleFixedItemsLocation(int fromRange, int toRange) {
         var options = new ArrayList<Integer>();
@@ -133,13 +139,9 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
         return options;
     }
 
-    /**
-     * calculate the real 'range' to move on (as a result of Block size
-     *
-     * @param x wanted location
-     * @return the real x size
-     */
+
     private int getClosestToBlockSize(int x) {
+        //calculate the real 'range' to move on (as a result of Block size)
         return x - x % Block.SIZE;
     }
 

@@ -4,6 +4,10 @@ import pepse.util.SurfaceCreator;
 
 import java.util.List;
 
+/**
+ * infinite world creator
+ * @author Tomer Goldberg
+ */
 public class InfiniteWorldCreator {
 
     private final List<SurfaceCreator> surfaces;
@@ -14,6 +18,12 @@ public class InfiniteWorldCreator {
 
     private static final int minAreaToRegenerate = 100;
 
+    /**
+     * constructor
+     * @param surfaces surface of terrain
+     * @param xBufferFromPoint buffer porint
+     * @param initalX initial point coordinate x
+     */
     public InfiniteWorldCreator(List<SurfaceCreator> surfaces,
                                 int xBufferFromPoint,
                                 int initalX) {
@@ -26,6 +36,10 @@ public class InfiniteWorldCreator {
 
     }
 
+    /**
+     * update surface
+     * @param currentX current x coordinate
+     */
     public void updateSurfaces(int currentX) {
         if (currentX + this.xBufferFromPoint < maxSurfaceGenerated &&
                 currentX - this.xBufferFromPoint > minSurfaceGenerated) {
@@ -52,6 +66,12 @@ public class InfiniteWorldCreator {
         }
 
     }
+
+    /**
+     * update game surface
+     * @param minX starting range
+     * @param maxX ending range
+     */
     public void updateGameSurface(int minX, int maxX) {
         if(minX > this.minSurfaceGenerated) {
             this.minSurfaceGenerated = minX;

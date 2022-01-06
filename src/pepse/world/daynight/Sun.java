@@ -10,12 +10,24 @@ import pepse.transitions.AngularMovementTransitionCreator;
 
 import java.awt.*;
 
+/**
+ * sun obj at the simulator
+ * @author Tomer Goldberg
+ */
 public class Sun {
 
     private static int SUN_SIZE = 200;
     private static int SUN_INITAL_ANGLE = 0;
     private static int SUN_FINAL_ANGLE = 360;
 
+    /**
+     * creator of sun
+     * @param gameObjects object collection
+     * @param layer layer of sun
+     * @param windowDimensions window dimensions
+     * @param cycleLength length of cycle
+     * @return sun
+     */
     public static GameObject create(
             GameObjectCollection gameObjects,
             int layer,
@@ -40,7 +52,6 @@ public class Sun {
         sun.setTag("sun");
 
         transition.createTransitions(cycleLength, sun);
-
         gameObjects.addGameObject(sun, layer);
 
         return sun;

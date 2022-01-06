@@ -13,8 +13,11 @@ import pepse.world.movement.*;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 
+/**
+ * Avatar creator
+ * @author Tomer Goldberg
+ */
 public class Avatar extends AnimatedGameObject {
-
 
     private final static int LEFT_RIGHT_MOVEMENT_SPEED = 300;
     private final static int UP_DOWN_MOVEMENT_SPEED = 300;
@@ -28,16 +31,16 @@ public class Avatar extends AnimatedGameObject {
     private final AvatarEnergyHandler energyHandler;
     private MovementOptions currentMovementOption;
 
+
     /**
-     * Construct a new GameObject instance.
-     *
-     * @param topLeftCorner     Position of the object, in window coordinates (pixels).
-     *                          Note that (0,0) is the top-left corner of the window.
-     * @param dimensions        Width and height in window coordinates.
-     * @param renderable        The renderable representing the object. Can be null, in which case
-     * @param userInputListener user input lister item
-     * @param keyToMovement     used in order to map between the movement direction and the movement action
-     * @param animationHandler  used in order to change the avatar renderable
+     * constructor
+     * @param topLeftCorner top left corner of avatar
+     * @param dimensions dimensions if avatar
+     * @param renderable renderable obj
+     * @param userInputListener user's input
+     * @param keyToMovement movement keys
+     * @param energyHandler energy handler
+     * @param animationHandler animation handler
      */
     public Avatar(Vector2 topLeftCorner,
                   Vector2 dimensions,
@@ -57,6 +60,10 @@ public class Avatar extends AnimatedGameObject {
         currentMovementOption = MovementOptions.Standing;
     }
 
+    /**
+     * gets current movement
+     * @return current movement
+     */
     @Override
     public MovementOptions getCurrentMovement() {
         return currentMovementOption;
@@ -64,7 +71,6 @@ public class Avatar extends AnimatedGameObject {
 
     /**
      * Execute update on the game object, handles key change events
-     *
      * @param deltaTime time passed since last update
      */
     public void update(float deltaTime) {
@@ -102,7 +108,6 @@ public class Avatar extends AnimatedGameObject {
                 !userInputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
             tryExecuteMove(MovementOptions.Left);
             keyPressed = true;
-
         }
 
         //Right movement
@@ -129,7 +134,15 @@ public class Avatar extends AnimatedGameObject {
         }
     }
 
-
+    /**
+     * creating avatar
+     * @param gameObjects obj collection
+     * @param layer layer of avatar
+     * @param topLeftCorner top left corner
+     * @param inputListener input listener
+     * @param imageReader image reader
+     * @return avatar image
+     */
     public static Avatar create(GameObjectCollection gameObjects,
                                 int layer,
                                 Vector2 topLeftCorner,
