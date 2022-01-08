@@ -12,6 +12,7 @@ import pepse.util.TemporaryItem;
  * @author Tomer Goldberg
  */
 public class Block extends GameObject implements TemporaryItem {
+    public static final int SIZE = 30;
 
     /**
      * constructor
@@ -19,7 +20,7 @@ public class Block extends GameObject implements TemporaryItem {
      * @param renderable renderable obj
      */
     public Block(Vector2 topLeftCorner, Renderable renderable) {
-        super(topLeftCorner, Vector2.ONES.mult(GameObjectsConfiguration.BLOCK_SIZE), renderable);
+        super(topLeftCorner, Vector2.ONES.mult(SIZE), renderable);
 
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
         physics().setMass(GameObjectPhysics.IMMOVABLE_MASS);

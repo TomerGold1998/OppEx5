@@ -20,7 +20,6 @@ public class AvatarMoveLeftAndRightHandler implements MovementHandler {
      * @param direction the moving direction (left or right) vector
      */
     public AvatarMoveLeftAndRightHandler(int speed, Vector2 direction) {
-
         this.speed = speed;
         this.direction = direction;
     }

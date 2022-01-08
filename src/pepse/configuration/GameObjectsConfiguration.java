@@ -11,9 +11,6 @@ public class GameObjectsConfiguration {
     //GENERAL
     public final static int SEED = 42;
 
-    //Block
-    public final static int BLOCK_SIZE =  30;
-
     //SUN
     public final static Color SUN_HALO_COLOR = new Color(255, 255, 0, 20);
     public final static Vector2 SUN_SIZE = new Vector2(200,200);
@@ -34,7 +31,7 @@ public class GameObjectsConfiguration {
     public final static int[] TREE_WIDTH_OPTIONS = new int[]{10, 15, 20, 25};
 
     //LEAF
-    public final static int LEAF_MAX_LIFE = 60;
+    public final static int LEAF_MAX_LIFE = 40;
     public final static int LEAF_MIN_LIFE = 3;
     public final static Vector2 LEAF_BASE_SIZE = new Vector2(30,30);
 
