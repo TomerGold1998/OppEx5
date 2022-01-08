@@ -6,8 +6,8 @@ import danogl.gui.UserInputListener;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.configuration.GameObjectsConfiguration;
-import pepse.util.unique_game_objects.AnimatedGameObject;
 import pepse.util.MovementOptions;
+import pepse.util.unique_game_objects.AnimatedGameObject;
 import pepse.world.movement.*;
 
 import java.awt.event.KeyEvent;
@@ -94,38 +94,41 @@ public class Avatar extends AnimatedGameObject {
         }
     }
 
-    private boolean tryExecuteMove(MovementOptions option) {
+    private boolean tryExecuteMove(boolean previousMovementHandled, MovementOptions option) {
         var moved = keyToMovement.get(option).move(this);
         if (moved)
             currentMovementOption = option;
-        return moved;
+        // return true if move was already prevoius handled
+        // this is for handling turns with both vertical and axis movement
+        return previousMovementHandled || moved;
     }
 
     private void handleAvatarMovement() {
-        var keyPressed = false;
+        var handledMove = false;
 
         //Left movement
         if (userInputListener.isKeyPressed(KeyEvent.VK_LEFT) &&
                 !userInputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
-            keyPressed = tryExecuteMove(MovementOptions.Left);
+            handledMove = tryExecuteMove(handledMove, MovementOptions.Left);
         }
 
         //Right movement
         if (userInputListener.isKeyPressed(KeyEvent.VK_RIGHT) &&
                 !userInputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
-            keyPressed = tryExecuteMove(MovementOptions.Right);
+            handledMove = tryExecuteMove(handledMove, MovementOptions.Right);
         }
 
         //Flying movement
         if (userInputListener.isKeyPressed(KeyEvent.VK_SPACE) &&
                 userInputListener.isKeyPressed(KeyEvent.VK_SHIFT)) {
-            keyPressed = tryExecuteMove(MovementOptions.Flying);
+            handledMove = tryExecuteMove(handledMove, MovementOptions.Flying);
         } else if (userInputListener.isKeyPressed(KeyEvent.VK_SPACE)) {
             //jumping movement
-            keyPressed = tryExecuteMove(MovementOptions.Jumping);
+            handledMove = tryExecuteMove(handledMove, MovementOptions.Jumping);
         }
 
-        if (!keyPressed) {
+        if (!handledMove) {
+            // no movement is needed
             currentMovementOption = MovementOptions.Standing;
             this.setVelocity(new Vector2(0, this.getVelocity().y()));
         }

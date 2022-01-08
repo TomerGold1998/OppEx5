@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static pepse.configuration.GameObjectsConfiguration.BLOCK_SIZE;
 
 /**
  * creating necessary blocks and lets other objects know the height of the terrain at a certain coordinate.
@@ -73,7 +72,7 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
         if (groundHeights.containsKey((int) x))
             return groundHeights.get((int) x);
         var value = INITAL_GROUND_LEVEL +
-                (float) this.noiseCreator.noise(x) * NOISE_FACTOR * BLOCK_SIZE;
+                (float) this.noiseCreator.noise(x) * NOISE_FACTOR * Block.SIZE;
         groundHeights.put((int) x, value);
         return value;
     }
@@ -87,7 +86,7 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
      */
     @Override
     public float gameObjectHeightAt(float x) {
-        return (float) Math.floor(groundHeightAt(x) / BLOCK_SIZE) * BLOCK_SIZE;
+        return (float) Math.floor(groundHeightAt(x) / Block.SIZE) * Block.SIZE;
     }
 
 
@@ -113,11 +112,11 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
         for (var i = 0; i < TERRAIN_DEPTH; i++) {
             if (i < 2) {
                 blocks.add(new ReactingBlock(
-                        new Vector2(x, this.windowDimensions.y() - (y - (BLOCK_SIZE * i))),
+                        new Vector2(x, this.windowDimensions.y() - (y - (Block.SIZE * i))),
                         new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR))));
             } else {
                 blocks.add(new Block(
-                        new Vector2(x, this.windowDimensions.y() - (y - (BLOCK_SIZE * i))),
+                        new Vector2(x, this.windowDimensions.y() - (y - (Block.SIZE * i))),
                         new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR))));
             }
         }
@@ -135,7 +134,7 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
         var options = new ArrayList<Integer>();
         var realFrom = getClosestToBlockSize(fromRange);
         var realTo = getClosestToBlockSize(toRange);
-        for (var x = realFrom; x <= realTo; x += BLOCK_SIZE) {
+        for (var x = realFrom; x <= realTo; x += Block.SIZE) {
             options.add(x);
         }
         return options;
@@ -144,7 +143,7 @@ public class Terrain implements GroundHeightCalculator, SurfaceCreator {
 
     private int getClosestToBlockSize(int x) {
         //calculate the real 'range' to move on (as a result of Block size)
-        return x - x % BLOCK_SIZE;
+        return x - x % Block.SIZE;
     }
 
 }
